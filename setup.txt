@@ -1,0 +1,46 @@
+*Git global setup*
+git config —global user.name “vtsun”
+git config —global user.email “victor_sun@sfu.ca”
+
+*Create a new repository*
+git clone git@csil-git1.cs.surrey.sfu.ca:vtsun/test-project.git
+cd test-project
+touch README.md
+git add README.md
+git commit -m “add README”
+git push -u origin master
+
+*Push an existing folder*
+cd existing_folder
+git init
+git remote add origin git@csil-git1.cs.surrey.sfu.ca:vtsun/test-project.git
+git add .
+git commit -m “Initial commit”
+git push -u origin master
+
+*Push an existing Git repository*
+cd existing_repo
+git remote rename origin old-origin
+git remote add origin git@csil-git1.cs.surrey.sfu.ca:vtsun/test-project.git
+git push -u origin —all
+git push -u origin —tags
+
+SSH key tutorial: https://csil-git1.cs.surrey.sfu.ca/help/ssh/README#generating-a-new-ssh-key-pair
+
+0. Execute these in the terminal:
+ssh-keygen -t ed25519 -C “<comment>” 
+pbcopy < ~/.ssh/id_ed25519.pub 
+
+1. Navigate to https://gitlab.com or your local GitLab instance URL and sign in.
+
+2. Select your avatar in the upper right corner, and click Settings
+
+3. Click SSH Keys.
+
+4. Paste the public key that you copied into the Key text box.
+
+5. Make sure your key includes a descriptive name in the Title text box, such as /Work Laptop/ or /Home Workstation/.
+
+6. Include an (optional) expiry date for the key under “Expires at” section. (Introduced in  [GitLab 12.9](https://gitlab.com/gitlab-org/gitlab/-/issues/36243) .)
+
+7. Click the Add key button.
