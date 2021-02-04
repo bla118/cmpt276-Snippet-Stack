@@ -1,0 +1,31 @@
+<h1>Search Snippets</h1>
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/tomorrow-night.min.css">
+<body>
+    <form>
+        <label>Search Term</label><br>
+        <input id="search_term" type="text" name="language" value="" required>
+        <br><br>
+        <label>Target Language</label><br>
+        <input id="language_field" type="text" name="snippet_name" value="" required>
+        <br>
+    </form>
+    <button id="submit_button" type="submit" name="Create">Submit</button>
+    <br>
+    <br>
+    ]
+    <a href="http://127.0.0.1:5000/home">Back to home</a>
+    <div id="search-results"></div>
+    <!-- <button id="test_button">Test Button</button> -->
+    <!-- <pre>
+        <code class="python">
+            with sqlite3.connect('Snippets.db') as conn:
+            try:
+                cursor = conn.cursor()
+                cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
+        </code>
+    </pre> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="static/searchController.js"></script>
+</body>
