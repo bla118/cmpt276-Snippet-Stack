@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Home Page</title>
+  </head>
+  <body>
+    <!-- nav -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">ChatBot</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="active.html">Active<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="notyetimplemented.html">Recommended</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="notyetimplemented.html">Today</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="notyetimplemented.html">Trending</a>
+            </li>
+        </div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
+          Start Topic!
+        </button>
+    </nav>
+
+    <!-- pop up form for creating new topic -->
+    <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTopic">Create Topic</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+            <form role="form" enctype=multipart/form-data novalidate>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Topic</label>
+                <input type="text" class="form-control" id="topic-box" placeholder="topic goes herr..." required>
+              </div>
+              <div class="form-group">
+                <label for="topic-content-box" class="col-form-label">Contents</label>
+                <textarea class="form-control" id="topic-content-box" placeholder="contents goes herr..."></textarea>
+                <button type="submit" class="btn btn-primary">Post!</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- discussion section -->
+    <div id="active" class="pg discussion-window">
+      <!-- topic here -->
+      <div class="topic-box">
+        <h3>topic go here</h3>
+      </div>
+
+      <!-- the main post goes up here -->
+
+      <!-- flask jinja -->
+          <!-- <div class="main-post-section">
+            <p>{{  main_post }}</p>
+            <a href="#reply">Reply</a>
+          </div> -->
+
+      <div class="main-post-section">
+        <p>contents of main post go here...</p>
+        <a href="#reply">Reply</a>
+      </div>
+
+
+      <!-- replies to main post -->
+
+      <!-- flask jinja -->
+          <!-- {% for r in replies %}
+          <div class="post-section">
+            <p>{{ r.reply }}</p>
+            <a href="#reply">Reply</a>
+            <button type="button" class="btn btn-light view-replies-btn">View Replies</button>
+          </div>
+          {% endfor %} -->
+
+
+      <div class="post-section">
+        <p>replies goo here</p>
+        <a href="#reply">Reply</a>
+        <button type="button" class="btn btn-light view-replies-btn">View Replies</button>
+      </div>
+      <div class="post-section">
+        <p>replies goo here</p>
+        <a href="#reply">Reply</a>
+        <button type="button" class="btn btn-light view-replies-btn">View Replies</button>
+      </div>
+      <div class="post-section">
+        <p>replies goo here</p>
+        <a href="#reply">Reply</a>
+        <button type="button" class="btn btn-light view-replies-btn">View Replies</button>
+      </div>
+      <div class="post-section">
+        <p>replies goo here</p>
+        <a href="#reply">Reply</a>
+        <button type="button" class="btn btn-light view-replies-btn">View Replies</button>
+      </div>
+
+      <!-- reply box -->
+      <label id=reply for="editor"><h3>Your Reply</h3></label>
+      <div id="editor" style="height: 250px;">
+      </div>
+      <button type="submit" class="btn btn-primary">Post!</button>
+    </div>
+
+  </body>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // for the quill editor
+    var quill = new Quill('#editor', {theme: 'snow'});
+  </script>
+</html>
