@@ -103,3 +103,36 @@
     from {bottom: 0;}
     to {top: 20px;}
 } */
+.nav a{
+    text-decoration: none;
+    color: white;    
+    display: block;
+    text-align: right;
+    margin-left: 30px;
+    transform: translateX(750px);
+}
+.nav li{
+    color: rgb(255, 166, 0);
+    float: left;
+    list-style-type: none;
+}
+.nav{
+    margin: 0;
+    overflow: hidden;
+    padding-bottom: 25px;
+    background-color: rgb(35, 88, 119);
+    display: block;
+}
+
+body{
+    background-color: rgb(221, 221, 221);
+    margin: 0;
+    text-align: center;
+}
+#snippet_name{
+    width: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
+    border: 0;
+}

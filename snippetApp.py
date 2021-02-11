@@ -137,3 +137,6 @@ def delete_snippet():
     except Exception:
         return jsonify(message="Error"), 400
 
+@app.route("/createAccount")
+def createAccount():
+    return render_template("createAccount.html")
