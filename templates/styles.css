@@ -2,6 +2,7 @@
     position: fixed;
     top: 75%;
     width: 50%;
+    z-index: 1;
 }
 .chat-window {
     width: 50%;
@@ -16,6 +17,9 @@
     position: relative;
     background: #00aabb;
     border-radius: .4em;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    width: 60%;
     /* animation: bubbleLeft 5s ease;
     -webkit-animation: bubbleLeft 5s ease; */
 }
@@ -31,16 +35,15 @@
     margin-left: 10px;
     margin-bottom: -20px;
 }
-.chat-bubble-left-contents {
-    line-height: 1.5em;
-    text-align: left;
-    padding: 10px;
-}
 .chat-bubble-right {
     top: 20px;
     position: relative;
-    background: #00aabb;
+    background: #5efc03;
     border-radius: .4em;
+    margin-bottom: 30px;
+    margin-right: 10px;
+    width: 60%;
+    left: 39%;
 }
 .chat-bubble-right:after {
     content: '';
@@ -55,9 +58,9 @@
     margin-bottom: -20px;
     transform: scaleX(-1);
 }
-.chat-bubble-right-contents {
+.chat-bubble-contents {
     line-height: 1.5em;
-    text-align: right;
+    text-align: left;
     padding: 10px;
 }
 .topic-box {
@@ -66,15 +69,18 @@
     margin-top: 20px;
 }
 .main-post-section {
+    margin-top: 10px;
     margin-bottom: 50px;
     border-radius: .4em;
-    border-style: solid;
-    border-color: #fa9006;
+    border-left-style: solid;
+    border-left-color: #00aabb;
+    background-color: whitesmoke;
     padding: 10px;
 }
 .post-section {
     border-radius: .4em;
-    border-top: solid #f7ec11;
+    /* border-top: solid #f7ec11; */
+    background-color: whitesmoke;
     margin-bottom: 20px;
     margin-top: 20px;
     padding: 10px;
@@ -103,36 +109,3 @@
     from {bottom: 0;}
     to {top: 20px;}
 } */
-.nav a{
-    text-decoration: none;
-    color: white;    
-    display: block;
-    text-align: right;
-    margin-left: 30px;
-    transform: translateX(750px);
-}
-.nav li{
-    color: rgb(255, 166, 0);
-    float: left;
-    list-style-type: none;
-}
-.nav{
-    margin: 0;
-    overflow: hidden;
-    padding-bottom: 25px;
-    background-color: rgb(35, 88, 119);
-    display: block;
-}
-
-body{
-    background-color: rgb(221, 221, 221);
-    margin: 0;
-    text-align: center;
-}
-#snippet_name{
-    width: 200px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
-    border: 0;
-}

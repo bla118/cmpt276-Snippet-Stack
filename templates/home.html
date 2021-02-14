@@ -7,6 +7,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <title>Home Page</title>
   </head>
@@ -20,7 +21,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="home.html">Home<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="active.html">Active</a>
@@ -42,26 +43,26 @@
 
     <!-- pop up form for creating new topic -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="createTopic">Create Topic</h5>
+            <h5 class="modal-title" id="createTopic">Create A Topic!</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <!-- the start new topic form -->
           <div class="modal-body">
-            <form role="form" enctype=multipart/form-data novalidate>
+            <form role="form" id="topic-form" enctype=multipart/form-data novalidate>
               <div class="form-group">
                 <label for="topic-box" class="col-form-label">Topic</label>
-                <input type="text" class="form-control" id="topic-box" placeholder="topic goes herr..." required>
+                <input type="text" class="form-control" id="topic-box" name="topic-box" placeholder="e.g. Python while loop" required>
               </div>
               <div class="form-group">
                 <label for="topic-content-box" class="col-form-label">Contents</label>
-                <textarea class="form-control" id="topic-content-box" placeholder="contents goes herr..."></textarea>
-                <button type="submit" class="btn btn-primary">Post!</button>
+                <div id="topic-content-box" style="height: 250px;"></div>
               </div>
+              <button type="submit" class="btn btn-primary">Post!</button>
             </form>
           </div>
         </div>
@@ -69,22 +70,83 @@
     </div>
 
     <!-- chat -->
-    <div class="chat-window">
+    <div id="chatbot">
       <div class="chat-bubble-left">
-        <h3 class="chat-bubble-left-contents">Hi! What can I help you with?</h3>
+        <h3 class="chat-bubble-contents">Hi! What can I help you with?</h3>
       </div>
-  
+
+      
       <!-- insert chat bubbles here -->
-  
-  
-      <!-- search input -->
-      <form role="form" class="search-bar" enctype="multipart/form-data" novalidate>
+
+
+    </div>
+      
+    <!-- search input -->
+    <div class="chat-window">
+      <form role="form" class="search-bar" id="search-form" enctype=multipart/form-data novalidate>
           <div class="d-flex flex-row">
-            <input type="text" class="form-control mr-sm-2" id="search-box" placeholder="Enter any topic..." required>
+            <input type="text" class="form-control mr-sm-2" id="search-box" placeholder="Enter any topic or search for snippets..." required>
             <button type="submit" class="btn btn-primary"><i class="material-icons">search</i></button>
           </div>
       </form>
     </div>
-    <!-- end of chat window -->
+
   </body>
+
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // for the quill editor
+    var topicQuill = new Quill('#topic-content-box', {theme: 'snow'});
+
+    document.getElementById('search-form').addEventListener('submit', searchItem);
+    document.getElementById("topic-form").addEventListener('submit', async function () {
+        var data = new FormData(this);
+        for (let d of data.entries()) {
+          console.log(d);
+        }
+
+        var contents = topicQuill.root.innerHTML;
+        console.log(contents);
+
+
+        // const response = await fetch('http://127.0.0.1:5000/api/newtopic',
+        //                         {method: 'POST', body: JSON.stringify(msg)});
+
+        // res = await response.json();
+    })
+
+    async function searchItem(e) {
+        e.preventDefault();
+
+        // get data entered in search bar
+        var bubble = document.createElement("div");
+        var bubble_msg = document.createElement("h3");
+        var msg = document.createTextNode($("#search-form input").val());
+        bubble.className = "chat-bubble-right";
+        bubble_msg.className = "chat-bubble-contents";
+        bubble_msg.appendChild(msg);
+        bubble.appendChild(bubble_msg);
+
+        // add a chat bubble
+        document.getElementById("chatbot").appendChild(bubble);
+
+        // get reply from server
+        // (later)
+        // const response = await fetch('http://127.0.0.1:5000/api/fetch_snippet',
+        //                         {method: 'POST', body: JSON.stringify(msg)});
+
+        // res = await response.json();
+
+        // bubble = document.createElement("div");
+        // bubble_msg = document.createElement("h3");
+        // msg = document.createTextNode(res);
+        // bubble.className = "chat-bubble-left";
+        // bubble_msg.className = "chat-bubble-contents";
+        // bubble_msg.appendChild(msg);
+        // bubble.appendChild(bubble_msg);
+
+        // // add a chat bubble
+        // document.getElementById("chatbot").appendChild(bubble);
+    }
+  </script>
 </html>
