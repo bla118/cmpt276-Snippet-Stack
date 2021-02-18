@@ -140,3 +140,15 @@ def delete_snippet():
 @app.route("/createAccount")
 def createAccount():
     return render_template("createAccount.html")
+
+@app.route("/active")
+def activePage():
+    return render_template("active.html")
+
+@app.route("/home")
+def homePage():
+    return render_template("home.html")
+
+@app.route("/notyetimplemented")
+def notyetimplementedPage():
+    return render_template("notyetimplemented.html")
