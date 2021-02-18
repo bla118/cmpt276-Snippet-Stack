@@ -62,7 +62,7 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         user_status = "regular"
@@ -164,6 +164,35 @@ def delete_snippet():
         return jsonify(message="Error"), 400
 
 
-@app.route("/createAccount")
+@app.route('/createAccount')
 def create_account():
     return render_template("createAccount.html")
+
+
+
+@app.route('/request_snippet')
+def request_snippet_page():
+    print(g.user)
+    return render_template('requestSnippet.html')
+
+
+@app.route('/api/request_snippet', methods=['POST'])
+def request_snippet():
+    ''' Accepts an authenticated user request for a new snippet and inserts it into the database '''
+    if not g.user:
+        return jsonify(message="Not logged in")
+    try:
+        description = request.form['description']
+        language = request.form['language']
+        user = g.user
+        with sqlite3.connect('Users.db') as conn:
+            cursor = conn.cursor()
+            # the status of the user request is set to pending by default
+            cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description, language, 'pending'])
+        return jsonify(message="Successfully created new snippet request")
+    except Exception:
+        return jsonify(message="Error"), 400
+
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
