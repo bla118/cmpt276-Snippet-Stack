@@ -1,6 +1,11 @@
+// let urlForDelete = "http://127.0.0.1:5000/api/delete_snippet";
+// let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
+let urlForDelete = "https://snippet-stack.herokuapp.com/api/delete_snippet";
+let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
+
 async function deleteEntry(data)
 {
-    const response = await fetch('http://127.0.0.1:5000/api/delete_snippet',
+    const response = await fetch(urlForDelete,
                                 {method: 'POST', body: JSON.stringify(data)});
     let res = await response.json();
     console.log("deleted " + data['idToDel']);
@@ -9,7 +14,7 @@ async function deleteEntry(data)
 
 async function getData(data) 
 {
-    const response = await fetch('http://127.0.0.1:5000/api/fetch_snippet',
+    const response = await fetch(urlForSearch,
                                 {method: 'POST', body: JSON.stringify(data)});
     res = await response.json();
     let resultList = document.getElementById("search-results");
