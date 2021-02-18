@@ -6,7 +6,7 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = os.urandom(20)
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 class User:
