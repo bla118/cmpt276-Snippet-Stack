@@ -4,7 +4,7 @@ import json
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "somesecretasskey"
+app.secret_key = os.urandom(20)
 basedir = os.path.abspath(os.path.dirname(__file__))
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -72,6 +72,7 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
+    ''' Handles form action from user registration page. Upon successful registration, user will be automatically logged in and directed to home'''
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -110,7 +111,7 @@ def create():
     return render_template("create.html")
 
 
-@app.route("/search")
+@app.route('/search')
 def search():
     if not g.user:
         return redirect(url_for("login"))
@@ -159,6 +160,7 @@ def fetch_snippet():
 
 @app.route('/api/delete_snippet', methods=['GET', 'POST'])
 def delete_snippet():
+    ''' Deletes a snippet from database by id. Only works from the search results page '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
@@ -181,6 +183,7 @@ def create_account():
 
 @app.route('/request_snippet')
 def request_snippet_page():
+    ''' Entry point for request snippet page '''
     print(g.user)
     return render_template('requestSnippet.html')
 
