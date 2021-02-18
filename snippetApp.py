@@ -48,7 +48,7 @@ def notyetimplementedPage():
     return render_template("notyetimplemented.html")
 
 
-@app.route("/login", methods=['POST','GET'])
+@app.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
         session.pop('user_id', None)
@@ -104,7 +104,7 @@ def home():
     return render_template("index.html", username=session['user_id'])
 
 
-@app.route("/create")
+@app.route('/create')
 def create():
     if not g.user:
         return redirect(url_for("login"))
