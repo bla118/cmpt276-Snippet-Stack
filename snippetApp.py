@@ -38,6 +38,16 @@ def start():
     return redirect(url_for("login"))
 
 
+@app.route('/active')
+def activePage():
+    return render_template("active.html")
+
+
+@app.route('/notyetimplemented')
+def notyetimplementedPage():
+    return render_template("notyetimplemented.html")
+
+
 @app.route("/login", methods=['POST','GET'])
 def login():
     if request.method == 'POST':
@@ -118,7 +128,7 @@ def add_snippet():
         try:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
-            [data['name'], data['language'], data['code']])
+            [data['name'], data['language'].lower(), data['code']])
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
@@ -133,7 +143,7 @@ def fetch_snippet():
     data = request.data.decode('ascii')
     data = json.loads(data)
     try:
-        language = data['language']
+        language = data['language'].lower()
         search_key = data['search_key']
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
@@ -167,7 +177,6 @@ def delete_snippet():
 @app.route('/createAccount')
 def create_account():
     return render_template("createAccount.html")
-
 
 
 @app.route('/request_snippet')
