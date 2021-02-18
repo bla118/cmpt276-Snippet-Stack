@@ -32,7 +32,7 @@ def before_request():
                 return jsonify(message="Error")
 
 
-@app.route("/")
+@app.route('/')
 def start():
     session.clear()
     return redirect(url_for("login"))
@@ -60,7 +60,33 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/home")
+@app.route('/register', methods=['POST', 'GET'])
+def register():
+    if (request.method == 'POST'):
+        username = request.form['username']
+        password = request.form['password']
+        user_status = "regular"
+        confirmed_password = request.form['confirm-password']
+        if (password != confirmed_password):
+            print("Passwords do not match")
+            return redirect(url_for("create_account"))
+        with sqlite3.connect('Users.db') as conn:
+            cursor = conn.cursor()   
+            cursor.execute("SELECT * FROM Users WHERE username=?", [username])
+            response = cursor.fetchone()
+            if (response):
+                print("User already exists")
+                return redirect(url_for("create_account"))
+            cursor.execute("INSERT INTO Users(username, password, status) VALUES (?,?,?)", [username, password, user_status]) 
+            session['user_id'] = username
+            print("Successfully registered new user")
+            print("You are logged in")
+            return render_template("index.html", username=session['user_id'])
+    return render_template("login.html")
+
+
+
+@app.route('/home')
 def home():
     if not g.user:
         return redirect(url_for("login"))
@@ -81,7 +107,7 @@ def search():
     return render_template("search.html")
 
 
-@app.route("/api/create_snippet", methods=['GET', 'POST'])
+@app.route('/api/create_snippet', methods=['GET', 'POST'])
 def add_snippet():
     if request.method == 'GET':
         if not g.user:
@@ -98,7 +124,7 @@ def add_snippet():
             return jsonify(message="Error"), 400
 
 
-@app.route("/api/fetch_snippet", methods=['GET', 'POST'])
+@app.route('/api/fetch_snippet', methods=['GET', 'POST'])
 def fetch_snippet():
     if request.method == 'GET':
         if not g.user:
@@ -121,7 +147,7 @@ def fetch_snippet():
         return jsonify(message="Error"), 400
 
 
-@app.route("/api/delete_snippet", methods=['GET', 'POST'])
+@app.route('/api/delete_snippet', methods=['GET', 'POST'])
 def delete_snippet():
     if request.method == 'GET':
         if not g.user:
@@ -136,6 +162,7 @@ def delete_snippet():
             return jsonify(message="Successfully deleted snippet")
     except Exception:
         return jsonify(message="Error"), 400
+
 
 @app.route("/createAccount")
 def createAccount():

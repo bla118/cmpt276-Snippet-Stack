@@ -16,10 +16,11 @@
       <!-- Icon -->
    
       <!-- Login Form -->
-      <form method="POST" action="{{url_for('createAccount') }}">
+      <form action="register" method="POST">
         <input type="text" id="login" class="fadeIn second" name="username" placeholder="Username">
-        <input type="text" id="password" class="fadeIn third" name="password" placeholder="Password">
-        <input type="submit" class="fadeIn fourth" value="Create">
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
+        <input type="password" id="confirm-password" class="fadeIn third" name="confirm-password" placeholder="Confirm Password">
+        <input type="submit" id="submit-button" class="fadeIn fourth" value="Create">
       </form>
   
     </div>
@@ -28,5 +29,20 @@
 
 
 </body>
-
+<script>
+// document.getElementById("submit-button").addEventListener("click", function() {
+//   let data = {};
+//   data['username'] = document.getElementById("login").value;
+//   data['password'] = docuemnt.getElementById("password").value;
+//   data['confirmed_password'] = document.getElementById("confirm-password").value;
+//   if (data['password'] == data['confirmed_password'])
+//   {
+//     console.log(data);
+//   }
+//   else
+//   {
+//     console.log("Invalid entry");
+//   }
+// })
+</script>
 </html>
