@@ -113,6 +113,9 @@ label{
 button{
     border-radius: 10px;
 }
+button:hover{
+        box-shadow: 2px 2px rgb(5, 5, 122);
+}
 .nav a{
     text-decoration: none;
     color: white;    
