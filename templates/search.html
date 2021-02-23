@@ -54,11 +54,11 @@
         <input id="language_field" type="text" name="snippet_name" value="" required>
         <br>
     </form>
-    <button id="submit_button" type="submit" name="Create">Submit</button>
+    <button onclick="changeLink()" id="submit_button" type="submit" name="Create">Submit</button>
     <br>
     <br>
 
-    <a href="{{ url_for('home') }}">Back to home</a>
+    <a id="linkToHome" href="{{ url_for('home') }}">Cancel</a>
     <div id="search-results"></div>
     <!-- <button id="test_button">Test Button</button> -->
     <!-- <pre>
@@ -72,5 +72,11 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
     <script src="static/searchController.js"></script>
+    <script>
+      function changeLink(){
+        var linkHome = document.getElementById("linkToHome");
+        linkHome.textContent = "Return Home";
+      }
+    </script>
 </body>
 </html>
