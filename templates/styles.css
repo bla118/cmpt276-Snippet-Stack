@@ -100,6 +100,24 @@
     right: 0;
     bottom: 0;
 }
+.flex-reply-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.flex-reply-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.flex-reply-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
 
 /* @keyframes bubbleLeft {
     from {bottom: 0;}
