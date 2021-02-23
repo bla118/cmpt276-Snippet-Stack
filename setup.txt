@@ -44,3 +44,4 @@ pbcopy < ~/.ssh/id_ed25519.pub
 6. Include an (optional) expiry date for the key under “Expires at” section. (Introduced in  [GitLab 12.9](https://gitlab.com/gitlab-org/gitlab/-/issues/36243) .)
 
 7. Click the Add key button.
+   

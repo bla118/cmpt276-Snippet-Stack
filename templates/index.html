@@ -46,8 +46,11 @@
     <h1>Hello, {{ username }}</h1>
 
     
-    <a href="http://127.0.0.1:5000/create">http://127.0.0.1:5000/create</a>
+    <a href="{{ url_for('create') }}">Create Snippet</a>
     <br>
-    <a href="http://127.0.0.1:5000/search">http://127.0.0.1:5000/search</a>
-    </body>
+    <a href="{{ url_for('search') }}">Search Snippet</a>    
+    <br>
+    <a href="{{ url_for('request_snippet_page') }}">Request Snippet</a>
+</body>
+
 </html>

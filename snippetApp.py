@@ -4,9 +4,9 @@ import json
 import sqlite3
 
 app = Flask(__name__)
-app.secret_key = "somesecretasskey"
+app.secret_key = os.urandom(20)
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+# app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 
 class User:
@@ -38,7 +38,17 @@ def start():
     return redirect(url_for("login"))
 
 
-@app.route("/login", methods=['POST','GET'])
+@app.route('/active')
+def activePage():
+    return render_template("active.html")
+
+
+@app.route('/notyetimplemented')
+def notyetimplementedPage():
+    return render_template("notyetimplemented.html")
+
+
+@app.route('/login', methods=['POST','GET'])
 def login():
     if request.method == 'POST':
         session.pop('user_id', None)
@@ -62,7 +72,8 @@ def login():
 
 @app.route('/register', methods=['POST', 'GET'])
 def register():
-    if (request.method == 'POST'):
+    ''' Handles form action from user registration page. Upon successful registration, user will be automatically logged in and directed to home'''
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         user_status = "regular"
@@ -93,14 +104,14 @@ def home():
     return render_template("index.html", username=session['user_id'])
 
 
-@app.route("/create")
+@app.route('/create')
 def create():
     if not g.user:
         return redirect(url_for("login"))
     return render_template("create.html")
 
 
-@app.route("/search")
+@app.route('/search')
 def search():
     if not g.user:
         return redirect(url_for("login"))
@@ -118,7 +129,7 @@ def add_snippet():
         try:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
-            [data['name'], data['language'], data['code']])
+            [data['name'], data['language'].lower(), data['code']])
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
@@ -133,7 +144,7 @@ def fetch_snippet():
     data = request.data.decode('ascii')
     data = json.loads(data)
     try:
-        language = data['language']
+        language = data['language'].lower()
         search_key = data['search_key']
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
@@ -149,6 +160,7 @@ def fetch_snippet():
 
 @app.route('/api/delete_snippet', methods=['GET', 'POST'])
 def delete_snippet():
+    ''' Deletes a snippet from database by id. Only works from the search results page '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
@@ -164,18 +176,36 @@ def delete_snippet():
         return jsonify(message="Error"), 400
 
 
-@app.route("/createAccount")
-def createAccount():
+@app.route('/createAccount')
+def create_account():
     return render_template("createAccount.html")
 
-@app.route("/active")
-def activePage():
-    return render_template("active.html")
 
-@app.route("/home")
-def homePage():
-    return render_template("home.html")
+@app.route('/request_snippet')
+def request_snippet_page():
+    ''' Entry point for request snippet page '''
+    print(g.user)
+    return render_template('requestSnippet.html')
 
-@app.route("/notyetimplemented")
-def notyetimplementedPage():
-    return render_template("notyetimplemented.html")
+
+@app.route('/api/request_snippet', methods=['POST'])
+def request_snippet():
+    ''' Accepts an authenticated user request for a new snippet and inserts it into the database '''
+    if not g.user:
+        return jsonify(message="Not logged in")
+    try:
+        description = request.form['description']
+        language = request.form['language']
+        user = g.user
+        with sqlite3.connect('Users.db') as conn:
+            cursor = conn.cursor()
+            # the status of the user request is set to pending by default
+            cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description, language, 'pending'])
+        return jsonify(message="Successfully created new snippet request")
+    except Exception:
+        return jsonify(message="Error"), 400
+
+
+if __name__ == '__main__':
+    app.run(debug=True, use_reloader=True)
+    # app.run()

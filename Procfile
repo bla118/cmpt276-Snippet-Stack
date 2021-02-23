@@ -1,1 +1,1 @@
-web: gunicorn app:snippetApp
+web: gunicorn -b :$PORT snippetApp:app --preload
