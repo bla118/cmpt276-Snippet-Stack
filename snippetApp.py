@@ -128,8 +128,8 @@ def add_snippet():
     with sqlite3.connect('Snippets.db') as conn:
         try:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
-            [data['name'], data['language'].lower(), data['code']])
+            cursor.execute("INSERT INTO Snippets(name, language, code, author) VALUES (?,?,?,?)", 
+            [data['name'].lower(), data['language'].lower(), data['code'], g.user])
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
@@ -145,7 +145,7 @@ def fetch_snippet():
     data = json.loads(data)
     try:
         language = data['language'].lower()
-        search_key = data['search_key']
+        search_key = data['search_key'].lower()
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
             # cursor.execute("SELECT COUNT(*) FROM Test")
@@ -197,10 +197,10 @@ def request_snippet():
         description = request.form['description']
         language = request.form['language']
         user = g.user
-        with sqlite3.connect('Users.db') as conn:
+        with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
             # the status of the user request is set to pending by default
-            cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description, language, 'pending'])
+            cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description.lower(), language.lower(), 'pending'])
         return jsonify(message="Successfully created new snippet request")
     except Exception:
         return jsonify(message="Error"), 400
