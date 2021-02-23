@@ -118,7 +118,11 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.flex-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
 /* @keyframes bubbleLeft {
     from {bottom: 0;}
     to {top: 20px;}
