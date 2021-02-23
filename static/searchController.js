@@ -1,7 +1,7 @@
-// let urlForDelete = "http://127.0.0.1:5000/api/delete_snippet";
-// let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
-let urlForDelete = "https://snippet-stack.herokuapp.com/api/delete_snippet";
-let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
+let urlForDelete = "http://127.0.0.1:5000/api/delete_snippet";
+let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
+// let urlForDelete = "https://snippet-stack.herokuapp.com/api/delete_snippet";
+// let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
 
 async function deleteEntry(data)
 {

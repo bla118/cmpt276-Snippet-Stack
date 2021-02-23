@@ -103,8 +103,15 @@
     from {bottom: 0;}
     to {top: 20px;}
 } */
-.search-results{
-    width: 50vw;
+#search-results{
+    margin-left: 25vw;
+    margin-right: 25vw;
+}
+label{
+    padding-left: 10px;
+}
+button{
+    border-radius: 10px;
 }
 .nav a{
     text-decoration: none;
