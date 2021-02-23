@@ -12,6 +12,7 @@
   </head>
   
   <body style="background-color: #a8a7a7;">
+    <div class="backgroundImage">
     <!-- nav -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">ChatBot</a>
@@ -42,15 +43,13 @@
         </button></a>
     </nav>
 
-   
-    <h1>Hello, {{ username }}</h1>
-    <h1> TESTTTTTTTT</h1>
-    
-    <a href="{{ url_for('create') }}">Create Snippet</a>
-    <br>
-    <a href="{{ url_for('search') }}">Search Snippet</a>    
-    <br>
-    <a href="{{ url_for('request_snippet_page') }}">Request Snippet</a>
+      <h1>Hello, {{ username }}</h1>
+      <a href="{{ url_for('create') }}">Create Snippet</a>
+      <br>
+      <a href="{{ url_for('search') }}">Search Snippet</a>    
+      <br>
+      <a href="{{ url_for('request_snippet_page') }}">Request Snippet</a>
+    </div>
 </body>
 
 </html>

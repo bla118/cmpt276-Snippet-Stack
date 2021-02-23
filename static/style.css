@@ -103,8 +103,18 @@
     from {bottom: 0;}
     to {top: 20px;}
 } */
-.search-results{
-    width: 50vw;
+#search-results{
+    margin-left: 25vw;
+    margin-right: 25vw;
+}
+label{
+    padding-left: 10px;
+}
+button{
+    border-radius: 10px;
+}
+button:hover{
+        box-shadow: 2px 2px rgb(5, 5, 122);
 }
 .nav a{
     text-decoration: none;
@@ -126,7 +136,21 @@
     background-color: rgb(35, 88, 119);
     display: block;
 }
-
+.backgroundImage{
+    position: relative;
+    z-index:1;
+}
+.backgroundImage:before{
+    z-index:-1;
+    position:absolute;
+    left:0;
+    top:0;
+    content: url('backgroundImage.PNG');
+    opacity:0.1;
+    background-size: 100vh;
+    /* transform: translateX(3vw); */
+    transform: translate(3vw, -11vh);
+}
 body{
     background-color: rgb(221, 221, 221);
     margin: 0;
