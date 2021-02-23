@@ -20,24 +20,29 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="home">Home</a>
+            <a class="nav-link" href="home.html">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="active">Active</a>
+            <a class="nav-link" href="active.html">Active</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="notyetimplemented">Recommended<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="notyetimplemented.html">Recommended<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="notyetimplemented">Today</a>
+            <a class="nav-link" href="notyetimplemented.html">Today</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="notyetimplemented">Trending</a>
+            <a class="nav-link" href="notyetimplemented.html">Trending</a>
           </li>
       </div>
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
-        Start Topic!
-      </button>
+      <div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
+          Start Topic!
+        </button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchSnippetModal" style="margin-left: 5px;">
+          Search Snippets
+        </button>
+      </div>
     </nav>
 
     <!-- pop up form for creating new topic -->
@@ -62,6 +67,33 @@
                 <div id="topic-content-box" style="height: 250px;"></div>
               </div>
               <button type="submit" class="btn btn-primary">Post!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- pop up form for searching snippet -->
+    <div class="modal fade" tabindex="-1" id="searchSnippetModal" role="dialog" aria-labelledby="#searchSnippet" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="searchSnippet">Search Snippets</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Search Term</label>
+                <input type="text" class="form-control" id="search-term-box" name="topic-box" placeholder="e.g. loops..." required>
+              </div>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Target Language</label>
+                <input type="text" class="form-control" id="language-box" name="snippet-name" placeholder="e.g. Python" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Search!</button>
             </form>
           </div>
         </div>
