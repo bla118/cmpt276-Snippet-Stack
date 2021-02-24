@@ -2,13 +2,17 @@
 This project is deployed at: https://snippet-stack.herokuapp.com
 
 ## Dependencies
-Python 3.6
-SQLite 3.34.0
-Flask 1.1.2
-gunicorn 20.0.4
-Werkzeug==1.0.1
+Python 3.6<br>
+SQLite 3.34.0<br>
+Flask 1.1.2<br>
+gunicorn 20.0.4<br>
+Werkzeug==1.0.1<br>
+
 
 ## Installation
-To run this project in development mode, use:
-pip install -r requirements.txt
+To run this project in development mode, use:<br>
+pip install -r requirements.txt<br>
 python3 snippetApp.py
+
+
+## Demo
