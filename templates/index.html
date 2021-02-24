@@ -38,9 +38,9 @@
             </li>
         </ul>
         </div>
-        <a href="create"><button type="button" class="btn btn-primary">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
           Start Topic!
-        </button></a>
+        </button>
     </nav>
 
       <h1>Hello, {{ username }}</h1>
@@ -48,9 +48,11 @@
       <br>
       <!-- <a href="{{ url_for('create') }}">Create Snippet</a>
       <br> -->
-      <a href="{{ url_for('search') }}">Search Snippet</a>    
       <br>
-      <a href="{{ url_for('request_snippet_page') }}">Request Snippet</a>
+      <a href="{{ url_for('search') }}" class="btn btn-primary">Search Snippet</a>    
+      <br>
+      <br>
+      <a href="{{ url_for('request_snippet_page') }}" class="btn btn-primary">Request Snippet</a>
     </div>
 
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
