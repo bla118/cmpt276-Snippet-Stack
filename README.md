@@ -16,3 +16,11 @@ python3 snippetApp.py
 
 
 ## Demo
+Login / Registration:
+![Alt text](static/featureScreenshots/login.png)
+![Alt text](static/featureScreenshots/registration.png)
+<br>
+<br>
+Creating a new snippet
+![Alt text](static/featureScreenshots/create_new_snippet.png)
+
