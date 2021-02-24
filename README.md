@@ -16,6 +16,7 @@ To run this project in development mode, use:\
 ## Demo
 <b>Login / Registration:</b>\
 <img src="static/featureScreenshots/login.png" width="480">
+<br>
 <img src="static/featureScreenshots/registration.png" width="480">
 <br>
 <br>
