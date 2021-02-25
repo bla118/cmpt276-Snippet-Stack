@@ -1,14 +1,23 @@
-let urlForDelete = "http://127.0.0.1:5000/api/delete_snippet";
-let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
-// let urlForDelete = "https://snippet-stack.herokuapp.com/api/delete_snippet";
-// let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
+// let urlForDelete = "http://127.0.0.1:5000/api/delete_snippet";
+// let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
+let urlForDelete = "https://snippet-stack.herokuapp.com/api/delete_snippet";
+let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
 
 async function deleteEntry(data)
 {
     const response = await fetch(urlForDelete,
                                 {method: 'POST', body: JSON.stringify(data)});
     let res = await response.json();
-    console.log("deleted " + data['idToDel']);
+    console.log(res);
+    if (res['message'] == "Cannot delete snippet created by others") 
+    {
+        alert("Cannot delete snippet created by others!")
+    }
+    else
+    {
+        console.log("deleted " + data['idToDel']);
+        alert("Snippet deleted!");
+    }
     return res;
 }
 
@@ -36,7 +45,6 @@ async function getData(data)
             let data = {};
             data['idToDel'] = idToDel;
             deleteEntry(data);
-            alert("Snippet deleted!");
         });
 
         let label = document.createElement('label');
@@ -62,5 +70,6 @@ document.getElementById("submit_button").addEventListener("click", function() {
     let data = {};
     data['language'] = document.getElementById("language_field").value;
     data['search_key'] = document.getElementById("search_term").value;
+    data['private'] = document.getElementById("private-check-box").checked;
     getData(data);
 });

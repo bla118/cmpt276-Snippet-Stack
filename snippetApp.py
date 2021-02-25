@@ -128,8 +128,9 @@ def add_snippet():
     with sqlite3.connect('Snippets.db') as conn:
         try:
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO Snippets(name, language, code, author) VALUES (?,?,?,?)", 
-            [data['name'].lower(), data['language'].lower(), data['code'], g.user])
+            private = 1 if data['private'] else 0
+            cursor.execute("INSERT INTO Snippets(name, language, code, author, private) VALUES (?,?,?,?,?)", 
+            [data['name'].lower(), data['language'].lower(), data['code'], g.user, private])
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
@@ -140,18 +141,23 @@ def fetch_snippet():
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
-    # print(json.loads(request.data))
     data = request.data.decode('ascii')
     data = json.loads(data)
     try:
         language = data['language'].lower()
         search_key = data['search_key'].lower()
+        private = 1 if data['private'] else 0
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
-            # cursor.execute("SELECT COUNT(*) FROM Test")
-            # print("Total entries: ", cursor.fetchone())
-            cursor.execute("SELECT * FROM Snippets WHERE Language=? AND name LIKE ? LIMIT 10",
-            [language, f'%{search_key}%'])
+            # private flag checked = returns only snippets created by this user
+            if private:
+                cursor.execute("SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
+                [g.user, language, f'%{search_key}%'])
+            # otherwise, return all matching public snippets by other users AND matching snippets by this user
+            else:
+                # too lazy to write, just copy/pasted the above query...
+                cursor.execute("SELECT * FROM Snippets WHERE language=? AND name LIKE ? AND (private <> 1 OR private IS NULL) UNION SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
+                [language, f'%{search_key}%', g.user, language, f'%{search_key}%'])
             data = cursor.fetchall()
             return json.dumps(data)
     except Exception:
@@ -170,7 +176,13 @@ def delete_snippet():
         identifier = data['idToDel']
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
-            cursor.execute("DELETE FROM Snippets WHERE id=?", [int(identifier)])
+            cursor.execute("SELECT * FROM Snippets WHERE id=? AND author=?", [int(identifier), g.user])
+            res = cursor.fetchone()
+            print(res)
+            if res:
+                cursor.execute("DELETE FROM Snippets WHERE id=? AND author=?", [int(identifier), g.user])
+            else:
+                return jsonify(message="Cannot delete snippet created by others"), 401
             return jsonify(message="Successfully deleted snippet")
     except Exception:
         return jsonify(message="Error"), 400
@@ -201,7 +213,7 @@ def request_snippet():
             cursor = conn.cursor()
             # the status of the user request is set to pending by default
             cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description.lower(), language.lower(), 'pending'])
-        return jsonify(message="Successfully created new snippet request")
+        return redirect(url_for("home"))
     except Exception:
         return jsonify(message="Error"), 400
 

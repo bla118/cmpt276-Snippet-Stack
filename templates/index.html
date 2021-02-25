@@ -72,6 +72,10 @@
                 <input type="text" class="form-control" id="topic-box" name="topic-box" placeholder="e.g. Iterative DFS" required>
                 <label for="language-box" class="col-form-label">Language</label>
                 <input type="text" class="form-control" id="language-box" name="language-box" placeholder="e.g. C++" required>
+                <br>
+                <input type="checkbox" id="private-check-box" name="private-check-box">
+                <label for="private-check-box" class="col-form-label">Make snippet private</label>
+
               </div>
               <div class="form-group">
                 <label for="topic-content-box" class="col-form-label">Contents</label>
@@ -100,12 +104,24 @@
 
       document.getElementById("submit-button").addEventListener('click', function() {
           let data = {};
-          data['name'] = document.getElementById("topic-box").value;
-          data['language'] = document.getElementById("language-box").value;
-          data['code'] = document.getElementById("topic-content-box").innerText;
+          let topicBox = document.getElementById("topic-box");
+          let languageBox = document.getElementById("language-box");
+          let codeBox = document.getElementById("topic-content-box");
+          let privateBox = document.getElementById("private-check-box");
+
+          data['name'] = topicBox.value;
+          data['language'] = languageBox.value;
+          data['code'] = codeBox.innerText;
+          data['private'] = privateBox.checked;
           console.log(data);
           postData(data);
           alert("Snippet created!");
+
+          // document.getElementById("topic-form").reset();
+          topicBox.innerText = "";
+          languageBox.innerText = "";
+          codeBox.innerText = "";
+          topicBox.checked = false;
       });
     </script>
 </body>
