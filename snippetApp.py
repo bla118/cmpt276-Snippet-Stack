@@ -50,6 +50,7 @@ def notyetimplementedPage():
 
 @app.route('/login', methods=['POST','GET'])
 def login():
+    ''' Handles user login by finding matching username and password record from teh Users database '''
     if request.method == 'POST':
         session.pop('user_id', None)
         # session.clear()
@@ -60,7 +61,7 @@ def login():
             cursor.execute("SELECT * FROM Users WHERE username=? AND password=?", [username, password]) 
             response = cursor.fetchone()
             if (response):
-                print(response)
+                # print(response)
                 session['user_id'] = username
                 print("You are logged in")
                 return render_template("index.html", username=session['user_id'])
@@ -120,6 +121,7 @@ def search():
 
 @app.route('/api/create_snippet', methods=['GET', 'POST'])
 def add_snippet():
+    ''' Creates a new snippet in the database '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
@@ -138,6 +140,7 @@ def add_snippet():
 
 @app.route('/api/fetch_snippet', methods=['GET', 'POST'])
 def fetch_snippet():
+    ''' Fetches matching snippets from database by langauge and snippet name. Unlike other endpoints, this one takes a Js fetch request instead of Flask form '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
@@ -149,13 +152,13 @@ def fetch_snippet():
         private = 1 if data['private'] else 0
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
-            # private flag checked = returns only snippets created by this user
+            # if private flag in form is checked, return only snippets created by this user
             if private:
                 cursor.execute("SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
                 [g.user, language, f'%{search_key}%'])
             # otherwise, return all matching public snippets by other users AND matching snippets by this user
             else:
-                # too lazy to write, just copy/pasted the above query...
+                # too lazy to write, just copy/pasted the above query and unioned...
                 cursor.execute("SELECT * FROM Snippets WHERE language=? AND name LIKE ? AND (private <> 1 OR private IS NULL) UNION SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
                 [language, f'%{search_key}%', g.user, language, f'%{search_key}%'])
             data = cursor.fetchall()
@@ -166,7 +169,7 @@ def fetch_snippet():
 
 @app.route('/api/delete_snippet', methods=['GET', 'POST'])
 def delete_snippet():
-    ''' Deletes a snippet from database by id. Only works from the search results page '''
+    ''' Deletes a snippet from database by id. Only works from the search results page. Users are only allowed to delete snippets created by themselves '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
@@ -178,7 +181,6 @@ def delete_snippet():
             cursor = conn.cursor()
             cursor.execute("SELECT * FROM Snippets WHERE id=? AND author=?", [int(identifier), g.user])
             res = cursor.fetchone()
-            print(res)
             if res:
                 cursor.execute("DELETE FROM Snippets WHERE id=? AND author=?", [int(identifier), g.user])
             else:
