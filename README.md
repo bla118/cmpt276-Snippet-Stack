@@ -17,8 +17,13 @@ To run this project in development mode, use:\
 <b>Login / Registration:</b>\
 <img src="static/featureScreenshots/login.png" width="480">
 <br>
+<br>
 <img src="static/featureScreenshots/registration.png" width="480">
 <br>
 <br>
 <b>Create a new snippet</b>\
 <img src="static/featureScreenshots/create_new_snippet.png" width="480">
+<br>
+<br>
+<b>Search snippets</b>\
+<img src="static/featureScreenshots/search_snippet.png" width="480">
