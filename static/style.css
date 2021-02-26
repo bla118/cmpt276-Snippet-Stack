@@ -114,7 +114,16 @@ button{
     border-radius: 10px;
 }
 button:hover{
-        box-shadow: 2px 2px rgb(5, 5, 122);
+    box-shadow: 2px 2px rgb(5, 5, 122);
+}
+
+#description{
+    width: 200px;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
+    border: 0;
+    /* margin-bottom: 15px; */
 }
 .nav a{
     text-decoration: none;
@@ -159,6 +168,7 @@ body{
 #snippet_name{
     width: 200px;
     padding: 10px;
+    margin: 15px;
     border-radius: 10px;
     box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
     border: 0;
@@ -169,6 +179,7 @@ body{
     border-radius: 10px;
     box-shadow: 0 0 15px 4px rgba(0,0,0,0.06);
     border: 0;
+    margin-bottom: 15px;
 }
 #code_input{
     padding: 10px;
