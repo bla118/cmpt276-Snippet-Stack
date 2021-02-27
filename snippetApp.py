@@ -82,13 +82,16 @@ def register():
         if (password != confirmed_password):
             print("Passwords do not match")
             return redirect(url_for("create_account"))
+        if (len(password) < 6 or len(username) < 6):
+            print("Password and username must be at least 6 characters long")
+            return redirect(url_for("create_account"))
         with sqlite3.connect('Users.db') as conn:
             cursor = conn.cursor()   
             cursor.execute("SELECT * FROM Users WHERE username=?", [username])
             response = cursor.fetchone()
             if (response):
                 print("User already exists")
-                return redirect(url_for("create_account"))
+                return redirect(url_for("login"))
             cursor.execute("INSERT INTO Users(username, password, status) VALUES (?,?,?)", [username, password, user_status]) 
             session['user_id'] = username
             print("Successfully registered new user")
