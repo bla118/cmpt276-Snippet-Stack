@@ -39,6 +39,12 @@
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
           Start Topic!
         </button>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#searchSnippetModal" style="margin-left: 5px;">
+          Search Snippets
+        </button>
+        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#requestSnippetModal" style="margin-left: 5px;">
+          Request Snippets
+        </button>
     </nav>
     <h1>Request Snippet</h1>
     <form action="api/request_snippet" method="POST">
@@ -83,6 +89,59 @@
         </div>
       </div>
     </div>
+    <!-- pop up form for searching snippet -->
+    <div class="modal fade" tabindex="-1" id="searchSnippetModal" role="dialog" aria-labelledby="#searchSnippet" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="searchSnippet">Search Snippets</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Search Term</label>
+                <input type="text" class="form-control" id="search-term-box" name="topic-box" placeholder="e.g. loops..." required>
+              </div>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Target Language</label>
+                <input type="text" class="form-control" id="language-box" name="snippet-name" placeholder="e.g. Python" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Search!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="requestSnippetModal" role="dialog" aria-labelledby="#searchSnippet" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="requestSnippet">Request Snippets</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Description</label>
+                <input type="text" class="form-control" id="request-term-box" name="topic-box" placeholder="e.g. loops..." required>
+              </div>
+              <div class="form-group">
+                <label for="topic-box" class="col-form-label">Language</label>
+                <input type="text" class="form-control" id="request-language-box" name="snippet-name" placeholder="e.g. Python" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Request!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
       <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
       <script>
         // for the quill editor
