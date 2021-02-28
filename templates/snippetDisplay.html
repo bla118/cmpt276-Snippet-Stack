@@ -55,53 +55,54 @@
         </div>
       </nav>
 
-    <!-- pop up form for creating new topic -->
+    <!-- pop up form for creating new snippet -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="createTopic">Create A Topic/Snippet!</h5>
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTopic">Create A Snippet!</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true">&times;</span>
             </button>
-        </div>
-        <!-- the start new topic form -->
-        <div class="modal-body">
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
             <form role="form" enctype=multipart/form-data novalidate>
-            <!-- language and topic -->
-            <div class="form-group">
+              <!-- language and topic -->
+              <div class="form-group">
                 <div class="row">
-                <div class="col">
+                  <div class="col">
                     <div class="form-group">
-                    <label for="topic-box" class="col-form-label">Topic/Snippet</label>
-                    <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
+                      <label for="topic-box" class="col-form-label">Snippet</label>
+                      <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
                     </div>
-                </div>
-                <div class="col">
+                  </div>
+                  <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
                     <input type="text" class="form-control" id="language-box" name="language-box" placeholder="e.g. C++" required>
+                  </div>
                 </div>
-                </div>
-            </div>
+              </div>
 
-            <!-- privacy -->
-            <div class="form-check form-switch">
+              <!-- privacy -->
+              <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private-check-box">
                 <label class="form-check-label" for="create-private-check-box">
-                Make snippet private
+                  Make snippet private
                 </label>
-            </div>
+              </div>
 
-            <!-- contents (code) -->
-            <div class="form-group">
+              <!-- contents (code) -->
+              <div class="form-group">
                 <label for="topic-content-box" class="col-form-label">Contents</label>
-                <div id="topic-content-box" style="height: 200px;"></div>
-            </div>
-            <button type="submit" class="btn btn-primary">Post!</button>
+                <!-- <div id="topic-content-box" style="height: 200px;"></div> -->
+                <textarea id="topic-content-box"></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Post!</button>
             </form>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </div>
 
     <!-- pop up form for replying -->
@@ -129,16 +130,41 @@
         </div>
     </div>
 
+    <!-- pop up form for editing snippet -->
+    <div class="modal fade" tabindex="-1" id="editModal" role="dialog" aria-labelledby="#edit" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="edit">My Snippet:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+              <!-- reply box -->
+              <form id="submitUpdatedSnippet" role="form" id="reply-form" enctype=multipart/form-data novalidate>
+                <div class="form-group">
+                  <div id="editEditor" style="height: 250px;">
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Post!</button>
+              </form>
+          </div>
+          </div>
+      </div>
+    </div>
+
     <!-- snippets are displayed here -->
     <div class="snippet-display">
-        <div class="flex-snippet">
+        <div id="s1" class="flex-snippet">
             <!-- header: user info, delete option(if snippet belongs to you) -->
             <div class="snippet-header">
                 <div class="snippet-title">
                     My snippet!
                 </div>
-                <button type="button" class="btn btn-link view-replies-btn">
-                    <i class="fa fa-trash" style="color: red;" aria-hidden="true"></i>
+                <button type="button" class="btn btn-link view-replies-btn" style="color: red;" onclick="deleteSnippet()">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
                 </button>
             </div>
             <!-- source code of snippet -->
@@ -166,7 +192,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
                     <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
                         Comment
                     </button>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
+                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editModal" onclick="editSnippet()">
                         <i class="fa fa-pencil" aria-hidden="true"></i>Edit
                     </button>
                 </div>
@@ -174,7 +200,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
             </div>
         </div>
 
-        <div class="flex-snippet">
+        <div id="s2" class="flex-snippet">
             <!-- header: user info, delete option(if snippet belongs to you) -->
             <div class="snippet-header">
                 <div class="snippet-title">
@@ -223,6 +249,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
                           ['blockquote', 'code-block'], [{'list': 'ordered'}, {'list': 'bullet'}], 
                           ['link', 'image']
                           ];
+
     // for the quill editor
     var replyQuill = new Quill('#replyEditor', {
       modules: {
@@ -232,13 +259,52 @@ basedir = os.path.abspath(os.path.dirname(__file__))
       },
       theme: 'snow'
     });
-    var topicQuill = new Quill('#topic-content-box', {      
+
+    var editQuill = new Quill('#editEditor', {      
       modules: {
-        toolbar: {
-          container: toolbarOptions
-        }
+        toolbar: false
       },
-      theme: 'snow'
+      theme: 'bubble'
     });
+
+    var currentEditSnippet; // keeps track of the current snippet being edited
+
+    // deletes a snippet
+    function deleteSnippet() {
+      var el = event.target.parentNode.parentNode.parentNode;
+      el.parentNode.removeChild(el);
+    }
+
+    // prepares the snippet for editing
+    function editSnippet() {
+        var snippetBody = event.target.parentNode.parentNode.parentNode.querySelector(".snippet-body");
+        var code = snippetBody.firstElementChild.firstElementChild.innerHTML;
+        if (code) {
+          editQuill.root.innerHTML = "<pre>" + code + "</pre>";
+        }
+        currentEditSnippet = snippetBody;
+    }
+
+    // event handler for changing a snippet
+    document.getElementById("submitUpdatedSnippet").addEventListener('submit', function(event) {
+        event.preventDefault(); // for testing
+
+        // make a call to the backend to update database
+        //****************TODO*******************
+
+        // create the pre and code blocks to contain the source code
+        var pre = document.createElement("pre");
+        var code = document.createElement("code");
+        code.innerHTML = editQuill.container.firstChild.firstChild.innerHTML;
+        code.className = "hljs lua";
+        pre.appendChild(code);
+
+        // replace the code in the snippet
+        while (currentEditSnippet.firstChild) {
+            currentEditSnippet.removeChild(currentEditSnippet.lastChild);
+        }
+
+        currentEditSnippet.appendChild(pre);
+    })
 </script>
 </html>

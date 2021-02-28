@@ -1,3 +1,11 @@
+#topic-content-box {
+    background-color: black; 
+    height: 200px; 
+    width: 100%; 
+    font-family: monospace; 
+    color: white;
+    border-radius: .8em;
+}
 .search-bar {
     position: fixed;
     top: 75%;
