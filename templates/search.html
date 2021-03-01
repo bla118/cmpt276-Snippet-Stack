@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/tomorrow-night.min.css">
     <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/dracula.min.css">
     <title>Search</title>
 </head>
   
@@ -55,7 +57,7 @@
       </div>
     </nav>
 
-    <!-- pop up form for creating new snippet -->
+    <!-- pop up form for creating new topic -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -96,7 +98,8 @@
               <div class="form-group">
                 <label for="topic-content-box" class="col-form-label">Contents</label>
                 <!-- <div id="topic-content-box" style="height: 200px;"></div> -->
-                <textarea id="topic-content-box"></textarea>
+                <!-- <textarea id="topic-content-box"></textarea> -->
+                <div id="topic-content-box"></div>
               </div>
               <button type="submit" class="btn btn-primary">Post!</button>
             </form>
@@ -122,12 +125,12 @@
                     </label>
                 </div>
             </div>
-
+              
             <button id="submit_button" class="btn btn-primary" type="submit" name="Create">Submit</button>
         </form>
 
         <!-- <a id="linkToHome" href="{{ url_for('home') }}">Cancel</a> -->
-        <div id="search-results"></div>
+        <!-- <div id="search-results"></div> -->
         <!-- <button id="test_button">Test Button</button> -->
         <!-- <pre>
             <code class="python">
@@ -138,9 +141,22 @@
             </code>
         </pre> -->
     </div>
+    <div style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
+      <p>Can't find snippet? Try <a href="requestSnippet.html">requesting</a> for one!</p>
+    </div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 <script src="static/searchController.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/javascript/javascript.min.js"></script>
+<script>
+  var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
+    mode: "javascript",
+    lineNumbers: true,
+    theme: 'dracula'
+  });
+  codeEditor.refresh();
+</script>
 </html>
