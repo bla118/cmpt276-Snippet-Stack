@@ -216,6 +216,9 @@
                 </button> 
             </div>
         </div>
+
+        <!-- backend will display replies in here -->
+        <!-- <div id="snippetComments"></div> -->
     </div>
 
 </body>
@@ -278,6 +281,7 @@
       el.parentNode.removeChild(el);
       // make a call to the backend to update database
       //****************TODO*******************
+
     }
 
     // copies the code inside the display to the editor
@@ -300,6 +304,17 @@
       likesEl.nodeValue = likes + 1;
       // make a call to the backend to update database
       //****************TODO*******************
+    }
+
+    // calls backend for replies of snippet
+    // if no replies exist then alert the user (flash)
+    function getReplies() {
+      var id = event.target.parentNode.parentNode.parentNode.id;
+
+      // make a get call to the backend
+      //****************TODO*******************
+
+      // backend will redirect to active.html
     }
 
     // event handler for updating a snippet
