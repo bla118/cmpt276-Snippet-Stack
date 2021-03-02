@@ -22,19 +22,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="home">Home</a>
+              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
             </li>
             <!-- <li class="nav-item active">
               <a class="nav-link" href="active">Active<span class="sr-only">(current)</span></a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="notyetimplemented">Recommended</a>
+              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="notyetimplemented">Today</a>
+              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="notyetimplemented">Trending</a>
+              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Trending</a>
             </li>
         </ul>
         </div>
@@ -150,8 +150,8 @@
       // for the quill editor
       var topicQuill = new Quill('#topic-content-box', {theme: 'snow'});
 
-      // let urlForCreate = 'http://127.0.0.1:5000/api/create_snippet';
-      let urlForCreate = "https://snippet-stack.herokuapp.com/api/create_snippet";
+      let urlForCreate = 'http://127.0.0.1:5000/api/create_snippet';
+      // let urlForCreate = "https://snippet-stack.herokuapp.com/api/create_snippet";
 
       async function postData(data) {
           const response = await fetch(urlForCreate,
