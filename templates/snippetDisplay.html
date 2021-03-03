@@ -57,7 +57,7 @@
         </div>
       </nav>
 
-    <!-- pop up form for creating new topic -->
+    <!-- pop up form for creating new snippet -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -69,7 +69,7 @@
           </div>
           <!-- the start new topic form -->
           <div class="modal-body">
-            <form role="form" enctype=multipart/form-data novalidate>
+            <form id="topic-form" role="form" enctype=multipart/form-data novalidate>
               <!-- language and topic -->
               <div class="form-group">
                 <div class="row">
@@ -81,7 +81,24 @@
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <input type="text" class="form-control" id="language-box" name="language-box" placeholder="e.g. C++" required>
+                    <select class="form-select form-control" id="language-box" name="language-box">
+                      <option value="python" selected>Python</option>
+                      <option value="clike">C</option>
+                      <option value="clike">C++</option>
+                      <option value="clike">C#</option>
+                      <option value="clike">Objective-C</option>
+                      <option value="clike">Java</option>
+                      <option value="clike">Kotlin</option>
+                      <option value="clike">Ceylon</option>
+                      <option value="clike">Scala</option>
+                      <option value="css">CSS</option>
+                      <option value="htmlmixed">HTML</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="jsx">JSX</option>
+                      <option value="sql">SQL</option>
+                      <option value="shell">Shell</option>
+                      <option value="xml">XML</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -186,7 +203,7 @@
                     </button>
                 </div>
                 <button type="button" class="btn btn-link" onclick="addLike()">
-                  number of likes<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
+                  0<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
                 </button>
             </div>
         </div>
@@ -212,7 +229,7 @@
                     </button>
                 </div>
                 <button type="button" class="btn btn-link" onclick="addLike()">
-                  number of likes<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
+                  0<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
                 </button> 
             </div>
         </div>
@@ -227,7 +244,24 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
+<!-- supported languages -->
+<!-- c, objective c, c++, c#, java, kotlin, ceylon, scala -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/clike/clike.min.js"></script>
+<!-- css -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/css/css.min.js"></script>
+<!-- html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/xml/xml.min.js"></script>
+<!-- javascript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/javascript/javascript.min.js"></script>
+<!-- python -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/python/python.min.js"></script>
+<!-- sql -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/sql/sql.min.js"></script>
+<!-- jsx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
+<!-- shell script  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 <script>
     var toolbarOptions = [
                           [{'header': []}, 'bold', 'italic', 'underline', 'strike', {'script': 'sub'}, {'script': 'super'}], 
@@ -246,6 +280,16 @@
       theme: 'snow'
     });
 
+    // create-a-snippet editor
+    var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
+      mode: "python",
+      autoRefresh: true,
+      lineNumbers: true,
+      theme: 'dracula'
+    });
+
+    codeEditor.refresh();
+
     var currentSnippetIndex; // keeps track of the current snippet being edited
     var snippetDisplay;
     var numberOfSnippets = 2;
@@ -253,6 +297,7 @@
     // initialize snippet display
     for (let i = 0; i < numberOfSnippets; i++) {
       snippetDisplay = new CodeMirror(document.getElementById(`s${i + 1}_raw`), {
+        mode: "javascript",
         lineNumbers: true,
         readOnly: "nocursor",
         theme: 'dracula'
@@ -277,16 +322,26 @@
 
     // deletes a snippet
     function deleteSnippet() {
-      var el = event.target.parentNode.parentNode.parentNode;
-      el.parentNode.removeChild(el);
-      // make a call to the backend to update database
-      //****************TODO*******************
+      if (confirm("Are you sure you want to delete this snippet?")) {
+        var el = event.currentTarget.parentNode.parentNode;
+        var i = Array.from(document.getElementById("snippet-display").children).indexOf(el);
 
+        // delete the code display for that snippet
+        snippets.splice(i, 1);
+        el.parentNode.removeChild(el);
+        // make a call to the backend to update database
+        //****************TODO*******************
+      }
     }
 
     // copies the code inside the display to the editor
     function editSnippet() {
-        var snippetEl = event.target.parentNode.parentNode.parentNode;
+        var snippetEl = event.currentTarget.parentNode.parentNode.parentNode;
+        // make a call to the backend to find out language of snippet
+        //****************TODO*******************
+
+        var language = "javascript"; // for testing
+        snippetEditor.setOption("mode", language);
 
         // get the index of the snippet
         var i = Array.from(document.getElementById("snippet-display").children).indexOf(snippetEl);
@@ -299,11 +354,16 @@
 
     // increment the likes count of the snippet
     function addLike() {
-      var likesEl = event.target.firstChild;
-      var likes = likesEl.nodeValue;
-      likesEl.nodeValue = likes + 1;
+      event.currentTarget.disabled = true;
+      var snippetEl = event.currentTarget.parentNode.parentNode;
+      var i = Array.from(document.getElementById("snippet-display").children).indexOf(snippetEl);
+
+      var likesEl = event.currentTarget.firstChild;
+      var likes = parseInt(likesEl.nodeValue, 10) + 1;
+      likesEl.nodeValue = likes;
       // make a call to the backend to update database
       //****************TODO*******************
+      
     }
 
     // calls backend for replies of snippet
@@ -317,6 +377,10 @@
       // backend will redirect to active.html
     }
 
+    // changes the language mode of the code editor
+    document.getElementById("language-box").addEventListener('change', function() {
+      codeEditor.setOption("mode", this.value);
+    });
     // event handler for updating a snippet
     document.getElementById("submitUpdatedSnippet").addEventListener('submit', function(event) {
         event.preventDefault(); // for testing
@@ -328,6 +392,38 @@
         // copy the code into the current snippet
         snippets[currentSnippetIndex].setValue(snippetEditor.getValue());
         $('#editModal').modal('hide');
-    })
+    });
+
+    // submission event handler for creating new snippet
+    document.getElementById("topic-form").addEventListener('submit', async function (event) {
+        event.preventDefault();
+        // get form values
+        //****************TODO*******************
+
+        var contents = codeEditor.getValue();
+        if (!contents) {
+          alert("Snippet is empty! Cannot submit empty snippet!");
+          return false;
+        }
+
+        // make a call to the backend to update database
+        //****************TODO*******************
+
+        $('#startTopicModal').modal('hide');
+        this.reset();
+        codeEditor.setValue("");
+    });
+    // posting a comment
+    document.getElementById("reply-form").addEventListener('submit', async function (event) {
+        event.preventDefault();
+        // get form values
+        //****************TODO*******************
+
+        // make a call to the backend to update database
+        //****************TODO*******************
+
+        $('#replyModal').modal('hide');
+        this.reset();
+    });
 </script>
 </html>

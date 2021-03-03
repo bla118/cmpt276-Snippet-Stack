@@ -37,19 +37,19 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+              <a class="nav-link" href="home.html">Home</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="{{ url_for('search') }}">Search<span class="sr-only">(current)</span></a>
+              <a class="nav-link" href="search.html">Search<span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended</a>
+              <a class="nav-link" href="notyetimplemented.html">Recommended</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
+              <a class="nav-link" href="notyetimplemented.html">Today</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Trending</a>
+              <a class="nav-link" href="notyetimplemented.html">Trending</a>
             </li>
         </div>
         <div class="flex-nav">
@@ -59,7 +59,7 @@
         </div>
       </nav>
 
-    <!-- pop up form for creating new topic -->
+    <!-- pop up form for creating new snippet -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -71,7 +71,7 @@
           </div>
           <!-- the start new topic form -->
           <div class="modal-body">
-            <form role="form" enctype=multipart/form-data novalidate>
+            <form id="topic-form" role="form" enctype=multipart/form-data>
               <!-- language and topic -->
               <div class="form-group">
                 <div class="row">
@@ -83,7 +83,24 @@
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <input type="text" class="form-control" id="language-box" name="language-box" placeholder="e.g. C++" required>
+                    <select class="form-select form-control" id="language-box" name="language-box">
+                      <option value="python" selected>Python</option>
+                      <option value="clike">C</option>
+                      <option value="clike">C++</option>
+                      <option value="clike">C#</option>
+                      <option value="clike">Objective-C</option>
+                      <option value="clike">Java</option>
+                      <option value="clike">Kotlin</option>
+                      <option value="clike">Ceylon</option>
+                      <option value="clike">Scala</option>
+                      <option value="css">CSS</option>
+                      <option value="htmlmixed">HTML</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="jsx">JSX</option>
+                      <option value="sql">SQL</option>
+                      <option value="shell">Shell</option>
+                      <option value="xml">XML</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -108,31 +125,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <!-- pop up form for replying -->
-    <div class="modal fade" tabindex="-1" id="replyModal" role="dialog" aria-labelledby="#reply" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="reply">Your reply:</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <!-- the start new topic form -->
-            <div class="modal-body">
-                <!-- reply box -->
-                <form role="form" id="reply-form" enctype=multipart/form-data novalidate>
-                <div class="form-group">
-                    <div id="replyEditor" style="height: 250px;">
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Post!</button>
-                </form>
-            </div>
-            </div>
-        </div>
     </div>
 
     <!-- pop up form for editing snippet -->
@@ -254,6 +246,24 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
+<!-- supported languages -->
+<!-- c, objective c, c++, c#, java, kotlin, ceylon, scala -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/clike/clike.min.js"></script>
+<!-- css -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/css/css.min.js"></script>
+<!-- html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/xml/xml.min.js"></script>
+<!-- javascript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/javascript/javascript.min.js"></script>
+<!-- python -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/python/python.min.js"></script>
+<!-- sql -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/sql/sql.min.js"></script>
+<!-- jsx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
+<!-- shell script  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 <script>
     var toolbarOptions = [
                           [{'header': []}, 'bold', 'italic', 'underline', 'strike', {'script': 'sub'}, {'script': 'super'}], 
@@ -272,12 +282,14 @@
       theme: 'snow'
     });
 
-    // code editor
+    // create-a-snippet editor
     var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
-      mode: "javascript",
+      mode: "python",
+      autoRefresh: true,
       lineNumbers: true,
       theme: 'dracula'
     });
+
     codeEditor.refresh();
 
     // to display the snippet
@@ -313,6 +325,30 @@
         // copy the code into the current snippet
         snippetDisplay.setValue(snippetEditor.getValue());
         $('#editModal').modal('hide');
-    })
+    });
+    // submission event handler for creating new snippet
+    document.getElementById("topic-form").addEventListener('submit', async function (event) {
+        event.preventDefault();
+        // get form values
+        //****************TODO*******************
+
+        var contents = codeEditor.getValue();
+        if (!contents) {
+          alert("Snippet is empty! Cannot submit empty snippet!");
+          return false;
+        }
+
+        // make a call to the backend to update database
+        //****************TODO*******************
+
+        $('#startTopicModal').modal('hide');
+        this.reset();
+        codeEditor.setValue("");
+    });
+
+    // changes the language mode of the code editor
+    document.getElementById("language-box").addEventListener('change', function() {
+      codeEditor.setOption("mode", this.value);
+    });
 </script>
 </html>

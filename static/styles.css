@@ -170,9 +170,12 @@
     color: white;
 }
 .CodeMirror {
-    border: 2px solid black;
+    border-radius: .6em;
     height: 75%;
 }
+/* .CodeMirror-gutters {
+    background-color: rgb(128, 105, 105);
+} */
 /* @keyframes bubbleLeft {
     from {bottom: 0;}
     to {top: 20px;}

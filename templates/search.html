@@ -31,23 +31,23 @@
               <a class="dropdown-item" href="#">Profile</a>
               <a class="dropdown-item" href="#">Settings</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{{ url_for('login') }}" style="color: red;">Logout</a>
+              <a class="dropdown-item" href="login.html" style="color: red;">Logout</a>
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+            <a class="nav-link" href="home.html">Home</a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('search') }}">Search<span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="search.html">Search<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended</a>
+            <a class="nav-link" href="notyetimplemented.html">Recommended</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
+            <a class="nav-link" href="notyetimplemented.html">Today</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Trending</a>
+            <a class="nav-link" href="notyetimplemented.html">Trending</a>
           </li>
       </div>
       <div class="flex-nav">
@@ -57,7 +57,7 @@
       </div>
     </nav>
 
-    <!-- pop up form for creating new topic -->
+    <!-- pop up form for creating new snippet -->
     <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -69,7 +69,7 @@
           </div>
           <!-- the start new topic form -->
           <div class="modal-body">
-            <form role="form" enctype=multipart/form-data novalidate>
+            <form id="topic-form" role="form" enctype=multipart/form-data novalidate>
               <!-- language and topic -->
               <div class="form-group">
                 <div class="row">
@@ -81,7 +81,24 @@
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <input type="text" class="form-control" id="language-box" name="language-box" placeholder="e.g. C++" required>
+                    <select class="form-select form-control" id="language-box" name="language-box">
+                      <option value="python" selected>Python</option>
+                      <option value="clike">C</option>
+                      <option value="clike">C++</option>
+                      <option value="clike">C#</option>
+                      <option value="clike">Objective-C</option>
+                      <option value="clike">Java</option>
+                      <option value="clike">Kotlin</option>
+                      <option value="clike">Ceylon</option>
+                      <option value="clike">Scala</option>
+                      <option value="css">CSS</option>
+                      <option value="htmlmixed">HTML</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="jsx">JSX</option>
+                      <option value="sql">SQL</option>
+                      <option value="shell">Shell</option>
+                      <option value="xml">XML</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -110,7 +127,7 @@
 
     <div class="search-window">
         <h1 style="text-align: center;">Search Snippets</h1>
-        <form role="form" enctype=multipart/form-data novalidate>
+        <form role="form" enctype=multipart/form-data>
             <div class="form-group">
                 <label for="search_term" class="col-form-label">Search Term</label>
                 <input id="search_term" class="form-control" type="text" name="language" placeholder="e.g. Python while loop" required>
@@ -142,7 +159,7 @@
         </pre> -->
     </div>
     <div style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
-      <p>Can't find snippet? Try <a href="{{ url_for('request_snippet_page') }}">requesting</a> for one!</p>
+      <p>Can't find snippet? Try <a href="requestSnippet.html">requesting</a> for one!</p>
     </div>
 
 </body>
@@ -150,13 +167,59 @@
 <script>hljs.initHighlightingOnLoad();</script>
 <script src="static/searchController.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
+
+<!-- supported languages -->
+<!-- c, objective c, c++, c#, java, kotlin, ceylon, scala -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/clike/clike.min.js"></script>
+<!-- css -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/css/css.min.js"></script>
+<!-- html -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/htmlmixed/htmlmixed.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/xml/xml.min.js"></script>
+<!-- javascript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/javascript/javascript.min.js"></script>
+<!-- python -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/python/python.min.js"></script>
+<!-- sql -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/sql/sql.min.js"></script>
+<!-- jsx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
+<!-- shell script  -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 <script>
+  // create-a-snippet editor
   var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
-    mode: "javascript",
+    mode: "python",
+    autoRefresh: true,
     lineNumbers: true,
     theme: 'dracula'
   });
+
   codeEditor.refresh();
+  
+  // changes the language mode of the code editor
+  document.getElementById("language-box").addEventListener('change', function() {
+    codeEditor.setOption("mode", this.value);
+  });
+  // submission event handler for creating new snippet
+  document.getElementById("topic-form").addEventListener('submit', async function (event) {
+      event.preventDefault();
+      // get form values
+      //****************TODO*******************
+
+      var contents = codeEditor.getValue();
+      if (!contents) {
+        alert("Snippet is empty! Cannot submit empty snippet!");
+        return false;
+      }
+
+      // make a call to the backend to update database
+      //****************TODO*******************
+
+      $('#startTopicModal').modal('hide');
+      this.reset();
+      codeEditor.setValue("");
+  });
 </script>
 </html>
