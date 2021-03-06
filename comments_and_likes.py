@@ -1,3 +1,7 @@
+#####################################################################
+############ THESE FUNCTIONS HAVE ALL BEEN TESTED ###################
+#####################################################################
+
 import sqlite3
 
 # returns the name of the likes table of a comment
