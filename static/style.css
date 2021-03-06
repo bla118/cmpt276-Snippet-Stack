@@ -160,8 +160,8 @@ button:hover{
     /* transform: translateX(3vw); */
     transform: translate(3vw, -11vh);
 }
-body{
-    background-color: rgb(221, 221, 221);
+.center-home-page {
+    /* background-color: rgb(221, 221, 221); */
     margin: 0;
     text-align: center;
 }
