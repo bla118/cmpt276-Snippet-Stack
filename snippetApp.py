@@ -15,6 +15,74 @@ class User:
         self.username = username
         self.password = password
 
+###########################################
+# table: <snippet_id>                     #
+#                                         #
+#+----------+----------+-------+---------+#
+#| reply_id | contents | likes | user_id |#
+#+----------+----------+-------+---------+#
+#| 1        | "hello"  |   3   | stalin4 |#
+#| 2        | "cool"   |   0   | hitler4 |#
+###########################################
+
+# creates the table above
+# inserts comments to the above table
+# example: insert_comments_for_snippet("s_2222", (contents, user_id))
+def insert_comments_for_snippet(snippet_id, insert_data):
+    with sqlite3.connect('Snippets.db') as conn:
+        cursor = conn.cursor()
+        # create table if table does not exist
+        cursor.execute(f'''CREATE TABLE IF NOT EXISTS {snippet_id} (reply_id INTEGER PRIMARY KEY, 
+                                                contents text NOT NULL, 
+                                                likes integer NOT NULL, 
+                                                user_id text NOT NULL);''')
+
+        # insert values
+        cursor.execute(f'''INSERT INTO {snippet_id} (contents, likes, user_id) VALUES (?, 0, ?);''', insert_data)
+
+# only deletes all the comments to a snippet
+# does not delete the snippet itself
+# call this when the snippet owner deletes snippet
+def delete_comments_for_snippet(snippet_id):
+    with sqlite3.connect('Snippets.db') as conn:
+        cursor = conn.cursor()
+        # delete table if table does exists
+        cursor.execute(f'''DROP TABLE IF EXISTS {snippet_id};''')
+
+######################## TEST FUNCTION ################################
+# tests the above 2 functions
+# set display=True for debugging
+def test_insert_and_delete_comments_for_snippet(display=True):
+  snippet_id = "s_122"
+
+  user_id = "admin"
+  comment = "<pre><code>print(\"hello\")</pre></code>"
+
+  insert_comments_for_snippet(snippet_id, (comment, user_id))
+
+  with sqlite3.connect('Snippets.db') as conn:
+      cursor = conn.cursor()
+      data = cursor.execute(f'''SELECT * FROM {snippet_id} WHERE reply_id = 1;''').fetchone()
+      if display:
+        print("reply_id:", data[0])
+        print("contents:", data[1])
+        print("likes:", data[2])
+        print("user_id:", data[3])
+      
+      if comment == data[1] and user_id == data[3]:
+        print("INSERT PASSED.")
+
+  delete_comments_for_snippet(snippet_id)
+
+  with sqlite3.connect('Snippets.db') as conn:
+      cursor = conn.cursor()
+      try:
+        data = cursor.execute(f'''SELECT * FROM {snippet_id} WHERE reply_id = 1;''').fetchone()
+      except:
+        print("DELETE PASSED.")
+
+
+########### the above functions have been tested ######################
 
 @app.before_request
 def before_request():
