@@ -49,8 +49,10 @@ def update_comment_of_snippet(snippet_id, comment_id, contents):
 
         try:
             # update content of a comment
-            cursor.execute(f'''UPDATE {snippet_id} SET contents = ? WHERE reply_id = ?;''', 
+            res = cursor.execute(f'''UPDATE {snippet_id} SET contents = ? WHERE reply_id = ?;''', 
                             [contents, comment_id])
+            if (res.rowcount == 0):
+                return False
         except:
             return False
 
@@ -125,14 +127,15 @@ def add_likes_to_a_comment(snippet_id, comment_id, user_id):
                         [num_likes + 1, comment_id])
         return True
 
+# when a comment is deleted, call this to delete the like table for the comment
 def delete_likes_to_a_comment(snippet_id, comment_id, user_id):
     with sqlite3.connect('Snippets.db') as conn:
         cursor = conn.cursor()
         # delete the user from the likes table
         likes_table_name = generate_likes_table_name(snippet_id, comment_id)
-        try:
-            cursor.execute(f'''DELETE FROM {likes_table_name} WHERE user_id = ?;''', [user_id])
-        except:
+
+        res = cursor.execute(f'''DELETE FROM {likes_table_name} WHERE user_id = ?;''', [user_id])
+        if res.rowcount == 0:
             return
 
         # decrement the likes counter
