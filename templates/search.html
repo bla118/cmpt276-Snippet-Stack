@@ -41,13 +41,13 @@
             <a class="nav-link" href="{{ url_for('search') }}">Search<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplemented') }}">Recommended</a>
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplemented') }}">Today</a>
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplemented') }}">Trending</a>
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Trending</a>
           </li>
       </div>
       <div class="flex-nav">
@@ -69,7 +69,7 @@
           </div>
           <!-- the start new topic form -->
           <div class="modal-body">
-            <form id="topic-form" role="form" enctype=multipart/form-data novalidate>
+            <form id="topic-form" role="form" enctype=multipart/form-data>
               <!-- language and topic -->
               <div class="form-group">
                 <div class="row">
@@ -159,7 +159,7 @@
         </pre> -->
     </div>
     <div style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
-      <p>Can't find snippet? Try <a href="{{ url_for('requestSnippet') }}">requesting</a> for one!</p>
+      <p>Can't find snippet? Try <a href="{{ url_for('request_snippet') }}">requesting</a> for one!</p>
     </div>
 
 </body>
