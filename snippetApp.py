@@ -37,6 +37,31 @@ def start():
     session.clear()
     return redirect(url_for("login"))
 
+class Snippet:
+    def __init__(self, code, name, id, likes):
+        self.code = code
+        self.name = name
+        self.id = id
+        self.likes = likes
+
+    def belongsToUser(self):
+        return False
+
+class Reply:
+    def __init__(self, contents, user, likes):
+        self.likes = likes
+        self.contents= contents
+        self.user_id = user
+
+    def belongsToUser(self):
+        return True
+
+@app.route('/experiment')
+def experiment():
+    snippet = Snippet("import os\nprint(\"Hello\")", "example1", "s_11", 15)
+    replies = [Reply("cool dude\n<pre>import os\nprint(x)</pre>", "stalin@cool.ca", 1)]
+    return render_template("active.html", snippet=snippet, replies=replies)
+
 
 @app.route('/active')
 def activePage():
