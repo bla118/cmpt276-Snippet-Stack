@@ -1,0 +1,134 @@
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 100%;
+}
+.search-bar {
+    position: absolute;
+    top: 75%;
+    width: 50%;
+    z-index: 1;
+}
+.search-window {
+    width: 75%;
+    top: 50%;
+    margin: 10px auto;
+    background-color: whitesmoke;
+    border-radius: .8em;
+    padding: 20px;
+}
+.chat-window {
+    width: 50%;
+    margin: 0 auto;
+}
+.discussion-window {
+    width: 75%;
+    margin: 0 auto;
+}
+.chat-bubble-left {
+    top: 20px;
+    position: relative;
+    background: #00aabb;
+    border-radius: .4em;
+    margin-bottom: 30px;
+    margin-left: 10px;
+    width: 60%;
+    animation: bubbleLeft 1s ease 1;
+    -webkit-animation: bubbleLeft 1s ease 1;
+    -webkit-filter: drop-shadow(0px 2px 2px rgba(130,130,130,1));
+    filter        : drop-shadow(0px 2px 2px rgba(130,130,130,1));
+    -ms-filter    : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    filter        : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+}
+.chat-bubble-left:hover {
+    -webkit-filter: drop-shadow(0px 2px 2px rgb(152, 231, 241,1));
+    filter        : drop-shadow(0px 2px 2px rgb(152, 231, 241,1));
+    -ms-filter    : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    filter        : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+}
+.chat-bubble-left:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: 20px solid transparent;
+    border-top-color: #00aabb;
+    border-bottom: 0;
+    border-left: 0;
+    margin-left: 10px;
+    margin-bottom: -20px;
+}
+.chat-bubble-right {
+    top: 20px;
+    position: relative;
+    background: #5efc03;
+    border-radius: .4em;
+    margin-bottom: 30px;
+    margin-right: 10px;
+    width: 60%;
+    left: 39%;
+    animation: bubbleRight 1s ease 1;
+    -webkit-animation: bubbleRight 1s ease 1;
+    -webkit-filter: drop-shadow(0px 2px 2px rgba(130,130,130,1));
+    filter        : drop-shadow(0px 2px 2px rgba(130,130,130,1));
+    -ms-filter    : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    filter        : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+}
+.chat-bubble-right:hover {
+    -webkit-filter: drop-shadow(0px 2px 2px rgb(152, 231, 241,1));
+    filter        : drop-shadow(0px 2px 2px rgb(152, 231, 241,1));
+    -ms-filter    : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+    filter        : "progid:DXImageTransform.Microsoft.Dropshadow(OffX=0, OffY=2, Color='#444')";
+}
+.chat-bubble-right:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 20px solid transparent;
+    border-top-color: #5efc03;
+    border-bottom: 0;
+    border-left: 0;
+    margin-right: 10px;
+    margin-bottom: -20px;
+    transform: scaleX(-1);
+}
+.chat-bubble-contents {
+    line-height: 1.5em;
+    text-align: left;
+    padding: 10px;
+}
+@keyframes bubbleLeft {
+    0% {
+        transform: translateX(-100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@-webkit-keyframes bubbleLeft {
+    0% {
+        transform: translateX(-100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes bubbleRight {
+    0% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+@-webkit-keyframes bubbleRight {
+    0% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
