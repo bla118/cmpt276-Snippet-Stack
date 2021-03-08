@@ -176,63 +176,47 @@
 
     <!-- snippets are displayed here -->
     <div id="snippet-display" class="snippet-display">
-        <div id="s1" class="flex-snippet">
-            <!-- header: user info, delete option(if snippet belongs to you) -->
-            <div class="snippet-header">
-                <div class="snippet-title">
-                    My snippet!
-                </div>
-                <button type="button" class="btn btn-link view-replies-btn" style="color: red;" onclick="deleteSnippet()">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                </button>
-            </div>
-            <!-- source code of snippet -->
-            <div id="s1_raw" class="snippet-body">
-            </div>
-            <!-- footer: comment (or edit), view replies options -->
-            <div class="snippet-footer">
-                <div>
-                    <button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">
-                        View Comments
-                    </button>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
-                        Comment
-                    </button>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editModal" onclick="editSnippet()">
-                        <i class="fa fa-pencil" aria-hidden="true"></i>Edit
-                    </button>
-                </div>
-                <button type="button" class="btn btn-link" onclick="addLike()">
-                  0<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
-                </button>
-            </div>
+        {% if len(snippets) == 0 %}
+        <h1 style="width: 100%; text-align: center;">Sorry, we could not find any snippets!</h1>
+        {% else %}
+        {% for s in snippets %}
+        <div id="{{ s.id }}" class="flex-snippet">
+          <!-- header: user info, delete option(if snippet belongs to you) -->
+          <div class="snippet-header">
+              <div class="snippet-title">
+                  {{ s.language }}-{{ s.name }}
+              </div>
+              {% if s.belongsToUser() %}
+              <button type="button" class="btn btn-link view-replies-btn" style="color: red;" onclick="deleteSnippet()">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+              </button>
+              {% endif %}
+          </div>
+          <!-- source code of snippet -->
+          <div id="{{ s.id }_raw" class="snippet-body">
+          </div>
+          <!-- footer: comment (or edit), view replies options -->
+          <div class="snippet-footer">
+              <div>
+                  <button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">
+                      View Comments
+                  </button>
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
+                      Comment
+                  </button>
+                  {% if s.belongsToUser() %}
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editModal" onclick="editSnippet()">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>Edit
+                  </button>
+                  {% endif %}
+              </div>
+              <button type="button" class="btn btn-link" onclick="addLike()">
+                {{ s.likes }}<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
+              </button> 
+          </div>
         </div>
-
-        <div id="s2" class="flex-snippet">
-            <!-- header: user info, delete option(if snippet belongs to you) -->
-            <div class="snippet-header">
-                <div class="snippet-title">
-                    NOT my snippet!
-                </div>
-            </div>
-            <!-- source code of snippet -->
-            <div id="s2_raw" class="snippet-body">
-            </div>
-            <!-- footer: comment (or edit), view replies options -->
-            <div class="snippet-footer">
-                <div>
-                    <button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">
-                        View Comments
-                    </button>
-                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
-                        Comment
-                    </button>
-                </div>
-                <button type="button" class="btn btn-link" onclick="addLike()">
-                  0<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
-                </button> 
-            </div>
-        </div>
+        {% endfor %}
+        {% endif %}
 
         <!-- backend will display replies in here -->
         <!-- <div id="snippetComments"></div> -->
@@ -262,38 +246,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
 <!-- shell script  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
+<script src="{{ url_for('static', filename='initializeCodeEditor.js') }}"></script>
+
+<script src="../static/initializeQuillEditor.js"></script>
 <script>
-    var toolbarOptions = [
-                          [{'header': []}, 'bold', 'italic', 'underline', 'strike', {'script': 'sub'}, {'script': 'super'}], 
-                          [{'color': []}, {'background': []}], 
-                          ['blockquote', 'code-block'], [{'list': 'ordered'}, {'list': 'bullet'}], 
-                          ['link', 'image']
-                          ];
-
-    // for the quill editor
-    var replyQuill = new Quill('#replyEditor', {
-      modules: {
-        toolbar: {
-          container: toolbarOptions
-        }
-      },
-      theme: 'snow'
-    });
-
-    // create-a-snippet editor
-    var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
-      mode: "python",
-      autoRefresh: true,
-      lineNumbers: true,
-      theme: 'dracula'
-    });
-
-    codeEditor.refresh();
-
     var currentSnippetIndex; // keeps track of the current snippet being edited
     var snippetDisplay;
-    var numberOfSnippets = 2;
     var snippets = [];
+    var numberOfSnippets = document.getElementById("snippet-display").childElementCount;
+
     // initialize snippet display
     for (let i = 0; i < numberOfSnippets; i++) {
       snippetDisplay = new CodeMirror(document.getElementById(`s${i + 1}_raw`), {
@@ -366,6 +327,16 @@
       
     }
 
+    function addReply() {
+      replyQuill.root.innerHTML = `<pre>import os
+        def add_one(x):
+            return x + 1
+
+        resutl = add_one(1)
+        print("result:", resutl)
+    </pre>`
+    }
+
     // calls backend for replies of snippet
     // if no replies exist then alert the user (flash)
     function getReplies() {
@@ -377,10 +348,6 @@
       // backend will redirect to active.html
     }
 
-    // changes the language mode of the code editor
-    document.getElementById("language-box").addEventListener('change', function() {
-      codeEditor.setOption("mode", this.value);
-    });
     // event handler for updating a snippet
     document.getElementById("submitUpdatedSnippet").addEventListener('submit', function(event) {
         event.preventDefault(); // for testing
@@ -421,7 +388,7 @@
 
         // make a call to the backend to update database
         //****************TODO*******************
-
+        console.log(replyQuill.root.innerHTML);
         $('#replyModal').modal('hide');
         this.reset();
     });

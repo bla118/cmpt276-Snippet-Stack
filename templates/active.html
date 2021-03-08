@@ -1,5 +1,3 @@
-<!-- backend inserts comments into this template and frontend will display it -->
-<!-- e.g. ...return render_template("active.html", comments=comments) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -231,7 +229,7 @@
                 {% endif %}
             </div>
             <button type="button" class="btn btn-link" onclick="addLike()">
-              number of likes<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
+              {{ snippet.likes }}<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>
             </button>
         </div>
       </div>
@@ -243,11 +241,11 @@
       {% for r in replies %}
       <div class="post-section" id="{{ r.id }}">
         <div class="flex-reply-header">
-          <div><i class="fa fa-user" aria-hidden="true" style="margin: 5px; background-color: rgb(177, 168, 168);"></i>{{ r.user_id }}</div>
+          <div><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>{{ r.user_id }}</div>
         </div>
-        <div id="{{ r.id }}_raw">{{ r.contents }}</div>
+        <div id="{{ r.id }}_raw">{{ r.contents|safe }}</div>
         <div class="flex-reply-footer">
-          {% if snippet.belongsToUser() %}
+          {% if r.belongsToUser() %}
           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#editReplyModal" onclick="editReply()">
               <i class="fa fa-pencil" aria-hidden="true"></i>Edit
           </button>
@@ -288,10 +286,21 @@
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script src="{{ url_for('static', filename='initializeQuillEditor.js') }}"></script>
 <script src="{{ url_for('static', filename='initializeCodeEditor.js') }}"></script>
-
-<script src="../static/initializeQuillEditor.js"></script>
-
 <script>
+    // highlight the code blocks in the node
+    function highlightCodeBlocks(node) {
+      // highlight code blocks
+      var replies = node.getElementsByTagName("pre");
+
+      Array.from(replies).forEach((block) => {
+        hljs.highlightBlock(block);
+      });
+      
+    }
+
+    // highlight code blocks
+    highlightCodeBlocks(document.getElementById("active"));
+
     // for the quill editor
     var editReplyQuill = new Quill('#editReplyEditor', {
         modules: {
@@ -302,7 +311,7 @@
         theme: 'snow'
     });
 
-    const jsonSnippetCode = {{ snippet.code | tojson | safe }};
+    const jsonSnippetCode = {{ snippet.code|tojson|safe }};
     // to display the snippet
     var snippetDisplay = new CodeMirror(document.querySelector(".snippet-body"), {
         lineNumbers: true,
@@ -336,8 +345,11 @@
     function editReply() {
       var post = event.currentTarget.parentNode.parentNode.children;
 
-      CURRENT_REPLY_ID = post.item(1);
-      var contents = CURRENT_REPLY_ID.innerHTML;
+      CURRENT_REPLY_ID = post.item(1).id;
+
+      // make a get request to the backend to get reply contents
+      //****************TODO*******************
+      var contents = "*call backend";
 
       editReplyQuill.root.innerHTML = contents;
     }
@@ -348,10 +360,15 @@
 
       // make a call to the backend to update database
       //****************TODO*******************
-
-      CURRENT_REPLY_ID.innerHTML = editReplyQuill.root.innerHTML;
+      var replyBox = document.getElementById(CURRENT_REPLY_ID);
+      replyBox.innerHTML = editReplyQuill.root.innerHTML;
 
       $('#editReplyModal').modal('hide');
+      this.reset();
+      editReplyQuill.root.innerHTML = "";
+
+      // highlight code in pre blocks
+      highlightCodeBlocks(replyBox);
     })
 
 
@@ -410,6 +427,11 @@
       document.getElementById("active").prepend(post);
 
       $('#replyModal').modal('hide');
+      this.reset();
+      replyQuill.root.innerHTML = "";
+
+      // highlight code blocks
+      highlightCodeBlocks(postContents);
     })
 
     // event handler for updating a snippet

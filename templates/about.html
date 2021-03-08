@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/dracula.min.css">
+    <title>About</title>
+  </head>
+  <body>
+    <!-- nav -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userProfileMenuButton" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="fa fa-user-circle" aria-hidden="true"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="userProfileMenuButton">
+              <a class="dropdown-item" href="#">Profile</a>
+              <a class="dropdown-item" href="#">Settings</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('login') }}" style="color: red;">Logout</a>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('search') }}">Search</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">About<span class="sr-only">(current)</span></a>
+          </li>
+      </div>
+      <div class="flex-nav">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#startTopicModal">
+          Start Topic!
+        </button>
+      </div>
+    </nav>
+
+    <!-- pop up form for creating new snippet -->
+    <div class="modal fade" tabindex="-1" id="startTopicModal" role="dialog" aria-labelledby="#createTopic" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTopic">Create A Snippet!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+            <form id="topic-form" role="form" enctype=multipart/form-data>
+              <!-- language and topic -->
+              <div class="form-group">
+                <div class="row">
+                  <div class="col">
+                    <div class="form-group">
+                      <label for="topic-box" class="col-form-label">Snippet</label>
+                      <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
+                    </div>
+                  </div>
+                  <div class="col">
+                    <label for="language-box" class="col-form-label">Language</label>
+                    <select class="form-select form-control" id="language-box" name="language-box">
+                      <option value="python" selected>Python</option>
+                      <option value="clike">C</option>
+                      <option value="clike">C++</option>
+                      <option value="clike">C#</option>
+                      <option value="clike">Objective-C</option>
+                      <option value="clike">Java</option>
+                      <option value="clike">Kotlin</option>
+                      <option value="clike">Ceylon</option>
+                      <option value="clike">Scala</option>
+                      <option value="css">CSS</option>
+                      <option value="htmlmixed">HTML</option>
+                      <option value="javascript">JavaScript</option>
+                      <option value="jsx">JSX</option>
+                      <option value="sql">SQL</option>
+                      <option value="shell">Shell</option>
+                      <option value="xml">XML</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- privacy -->
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private-check-box">
+                <label class="form-check-label" for="create-private-check-box">
+                  Make snippet private
+                </label>
+              </div>
+
+              <!-- contents (code) -->
+              <div class="form-group">
+                <label for="topic-content-box" class="col-form-label">Contents</label>
+                <!-- <div id="topic-content-box" style="height: 200px;"></div> -->
+                <!-- <textarea id="topic-content-box"></textarea> -->
+                <div id="topic-content-box"></div>
+              </div>
+              <button type="submit" class="btn btn-primary">Post!</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="snippet-display">
+        <h1>About</h1>
+        <p>'Snippet Stack' was created by Brandom Lam, Baldeep Salgania, Yong Hyuk Seo, Victor Sun and Mathew Wong as a way to share and manage code snippets</p>
+    </div>
+
+  </body>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
+    <!-- supported languages -->
+    <!-- c, objective c, c++, c#, java, kotlin, ceylon, scala -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/clike/clike.min.js"></script>
+    <!-- css -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/css/css.min.js"></script>
+    <!-- html -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/xml/xml.min.js"></script>
+    <!-- javascript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/javascript/javascript.min.js"></script>
+    <!-- python -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/python/python.min.js"></script>
+    <!-- sql -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/sql/sql.min.js"></script>
+    <!-- jsx -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
+    <!-- shell script  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
+    <script src="{{ url_for('static', filename='initializeCodeEditor.js') }}"></script>
+    <script>
+
+        // submission event handler for creating new snippet
+        document.getElementById("topic-form").addEventListener('submit', async function (event) {
+            event.preventDefault();
+            // get form values
+            //****************TODO*******************
+
+            var contents = codeEditor.getValue();
+            if (!contents) {
+                alert("Snippet is empty! Cannot submit empty snippet!");
+                return false;
+            }
+
+            // make a call to the backend to update database
+            //****************TODO*******************
+
+            $('#startTopicModal').modal('hide');
+            this.reset();
+            codeEditor.setValue("");
+        })
+
+    </script>
+</html>
