@@ -15,6 +15,7 @@
     <title>Search</title>
 </head>
 <script>
+  /* functions for getting values */
   function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -32,7 +33,7 @@ function getPrivateChecked(){
     return true;
   return false  
 }
-  
+  /* get values of variables from query string */
   function parseQueryString()
   {
     var searchTerm = getParameterByName("searchTerm");
@@ -42,6 +43,7 @@ function getPrivateChecked(){
     data['language'] = snippetLanguage;
     data['search_key'] = searchTerm;
     data['private'] = privateCheckedBox;
+    /* get data printed using the values */
     getData(data);
   }
 </script>
