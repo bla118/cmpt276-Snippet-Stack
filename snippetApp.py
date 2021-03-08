@@ -47,6 +47,9 @@ def activePage():
 def notyetimplementedPage():
     return render_template("notyetimplemented.html")
 
+@app.route('/snippetDisplay')
+def snippetDisplay():
+    return render_template("snippetDisplay.html")
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -64,7 +67,7 @@ def login():
                 # print(response)
                 session['user_id'] = username
                 print("You are logged in")
-                return render_template("index.html", username=session['user_id'])
+                return render_template("home.html", username=session['user_id'])
             print("Invalid credentials")
             return redirect(url_for("login"))
 
@@ -96,7 +99,7 @@ def register():
             session['user_id'] = username
             print("Successfully registered new user")
             print("You are logged in")
-            return render_template("index.html", username=session['user_id'])
+            return render_template("home.html", username=session['user_id'])
     return render_template("login.html")
 
 
@@ -105,7 +108,7 @@ def register():
 def home():
     if not g.user:
         return redirect(url_for("login"))
-    return render_template("index.html", username=session['user_id'])
+    return render_template("home.html", username=session['user_id'])
 
 
 @app.route('/create')
