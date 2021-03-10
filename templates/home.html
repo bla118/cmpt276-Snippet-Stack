@@ -75,12 +75,12 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="topic-box" class="col-form-label">Snippet</label>
-                      <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
+                      <input type="text" class="form-control" id="topic-box" name="topic" placeholder="e.g. Iterative DFS" required>
                     </div>
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <select class="form-select form-control" id="language-box" name="language-box">
+                    <select class="form-select form-control" id="language-box" name="language">
                       <option value="python" selected>Python</option>
                       <option value="clike">C</option>
                       <option value="clike">C++</option>
@@ -104,7 +104,7 @@
 
               <!-- privacy -->
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private-check-box">
+                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private">
                 <label class="form-check-label" for="create-private-check-box">
                   Make snippet private
                 </label>
@@ -127,7 +127,7 @@
     <!-- chat -->
     <div id="chatbot">
       <div class="chat-bubble-left">
-        <h3 class="chat-bubble-contents">Hi {{ username }}! What can I help you with?</h3>
+        <h3 class="chat-bubble-left-contents">Hi {{ username }}! What can I help you with?</h3>
       </div>
 
       
@@ -141,7 +141,7 @@
       <form role="form" class="search-bar" id="chatbot-form" enctype=multipart/form-data>
           <div class="d-flex flex-row">
             <input type="text" class="form-control mr-sm-2" id="search-box" placeholder="Enter any topic or search for snippets..." required>
-            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+            <button type="submit" id="searchButton" class="btn btn-primary"><i class="fa fa-search"></i></button>
           </div>
       </form>
     </div>
@@ -168,39 +168,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
   <!-- shell script  -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
-  <script src="{{ url_for('static', filename='initializeCodeEditor.js') }}"></script>
+  <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
   <script>
-
-    // submission event handler for creating new snippet
-    document.getElementById("topic-form").addEventListener('submit', async function (event) {
-        event.preventDefault();
-        // get form values
-        //****************TODO*******************
-
-        var contents = codeEditor.getValue();
-        if (!contents) {
-          alert("Snippet is empty! Cannot submit empty snippet!");
-          return false;
-        }
-
-        // make a call to the backend to update database
-        //****************TODO*******************
-
-        $('#startTopicModal').modal('hide');
-        this.reset();
-        codeEditor.setValue("");
-    })
 
     // get chatbot reply
     document.getElementById('chatbot-form').addEventListener('submit', async function searchItem(e) {
         e.preventDefault();
+
+        // prevent the user from sending new msg to the chatbot while the chatbot is thinking
+        document.getElementById("searchButton").disabled = true;
 
         // get data entered in search bar
         var bubble = document.createElement("div");
         var bubble_msg = document.createElement("h3");
         var msg = document.createTextNode($("#chatbot-form input").val());
         bubble.className = "chat-bubble-right";
-        bubble_msg.className = "chat-bubble-contents";
+        bubble_msg.className = "chat-bubble-right-contents";
         bubble_msg.appendChild(msg);
         bubble.appendChild(bubble_msg);
 
@@ -225,6 +208,8 @@
         // // add a chat bubble
         // document.getElementById("chatbot").appendChild(bubble);
         this.reset();
+        // prevent the user from sending new msg to the chatbot while the chatbot is thinking
+        document.getElementById("searchButton").disabled = false;
     });
   </script>
 </html>

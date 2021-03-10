@@ -30,7 +30,7 @@ html, body {
     top: 20px;
     position: relative;
     background: #00aabb;
-    border-radius: .4em;
+    border-radius: .8em;
     margin-bottom: 30px;
     margin-left: 10px;
     width: 60%;
@@ -62,8 +62,8 @@ html, body {
 .chat-bubble-right {
     top: 20px;
     position: relative;
-    background: #5efc03;
-    border-radius: .4em;
+    background: #2e302c;
+    border-radius: .8em;
     margin-bottom: 30px;
     margin-right: 10px;
     width: 60%;
@@ -87,17 +87,23 @@ html, body {
     bottom: 0;
     right: 0;
     border: 20px solid transparent;
-    border-top-color: #5efc03;
+    border-top-color: #2e302c;
     border-bottom: 0;
     border-left: 0;
     margin-right: 10px;
     margin-bottom: -20px;
     transform: scaleX(-1);
 }
-.chat-bubble-contents {
+.chat-bubble-left-contents {
     line-height: 1.5em;
     text-align: left;
     padding: 10px;
+}
+.chat-bubble-right-contents {
+    line-height: 1.5em;
+    text-align: left;
+    padding: 10px;
+    color: white;
 }
 @keyframes bubbleLeft {
     0% {

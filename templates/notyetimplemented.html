@@ -74,12 +74,12 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="topic-box" class="col-form-label">Snippet</label>
-                      <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
+                      <input type="text" class="form-control" id="topic-box" name="topic" placeholder="e.g. Iterative DFS" required>
                     </div>
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <select class="form-select form-control" id="language-box" name="language-box">
+                    <select class="form-select form-control" id="language-box" name="language">
                       <option value="python" selected>Python</option>
                       <option value="clike">C</option>
                       <option value="clike">C++</option>
@@ -103,7 +103,7 @@
 
               <!-- privacy -->
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private-check-box">
+                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private">
                 <label class="form-check-label" for="create-private-check-box">
                   Make snippet private
                 </label>
@@ -123,7 +123,9 @@
       </div>
     </div>
 
-    <p>this feature has not been implemented yet</p>
+    <div class="snippet-display" style="text-align: center; justify-content: center;">
+      <h1>We plan on adding this feature in the future!</h1>
+    </div>
 
   </body>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
@@ -147,39 +149,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
 <!-- shell script  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
-<script>
-  // create-a-snippet editor
-  var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
-    mode: "python",
-    autoRefresh: true,
-    lineNumbers: true,
-    theme: 'dracula'
-  });
-
-  codeEditor.refresh();
-  
-  // changes the language mode of the code editor
-  document.getElementById("language-box").addEventListener('change', function() {
-    codeEditor.setOption("mode", this.value);
-  });
-  // submission event handler for creating new snippet
-  document.getElementById("topic-form").addEventListener('submit', async function (event) {
-        event.preventDefault();
-        // get form values
-        //****************TODO*******************
-
-        var contents = codeEditor.getValue();
-        if (!contents) {
-          alert("Snippet is empty! Cannot submit empty snippet!");
-          return false;
-        }
-
-        // make a call to the backend to update database
-        //****************TODO*******************
-
-        $('#startTopicModal').modal('hide');
-        this.reset();
-        codeEditor.setValue("");
-    });
-</script>
+<script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
 </html>
