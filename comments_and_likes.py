@@ -144,6 +144,15 @@ def delete_likes_to_a_comment(snippet_id, comment_id, user_id):
         cursor.execute(f'''UPDATE {snippet_id} SET likes = ? WHERE reply_id = ?;''', 
                         [num_likes - 1, comment_id])
 
+# checks if a user is on the likes table
+def check_if_user_can_click_like(snippet_id, comment_id, user_id):
+    with sqlite3.connect('Snippets.db') as conn:
+        cursor = conn.cursor()
+        # get like table name of the reply
+        likes_table_name = generate_likes_table_name(snippet_id, comment_id)
+        user_exists = cursor.execute(f'''SELECT EXISTS(SELECT 1 FROM {likes_table_name} WHERE user_id = ?);''', 
+                        [user_id]).fetchone()[0]
+        return not user_exists == 1
 
 ######################## TEST FUNCTIONS ################################
 # tests the above functions
@@ -260,3 +269,24 @@ def test_insert_likes_and_delete_comments_for_snippet(display=False):
     with sqlite3.connect('Snippets.db') as conn:
         cursor = conn.cursor()
         cursor.execute(f'''DROP TABLE IF EXISTS {snippet_id};''')
+
+# tests check_if_user_can_click_like
+def test_check_if_user_can_click_like(display=False):
+    snippet_id = "s_122"
+    comment_id = "1"
+    user_id = "stalin4"
+    random_id = "admin"
+    insert_comments_for_snippet(snippet_id, ("contents", user_id)) # the owner of the comment can like his own comment but only once
+    add_likes_to_a_comment(snippet_id, comment_id, user_id)
+
+    test1 = check_if_user_can_click_like(snippet_id, comment_id, user_id)
+    test2 = check_if_user_can_click_like(snippet_id, comment_id, random_id)
+    if not test1 and test2:
+        print("check_if_user_can_click_like: PASSED.")
+    else:
+        print("check_if_user_can_click_like: FAILED.")
+        if (display):
+            print("test1:",test1)
+            print("test2",test2)
+
+    delete_likes_to_a_comment(snippet_id, comment_id, user_id)
