@@ -15,3 +15,16 @@ var replyQuill = new Quill('#replyEditor', {
     },
     theme: 'snow'
 });
+
+// posting a comment
+document.getElementById("reply-form").addEventListener('submit', async function (event) {
+    event.preventDefault();
+    // get form values
+    //****************TODO*******************
+
+    // make a call to the backend to update database
+    //****************TODO*******************
+    console.log(replyQuill.root.innerHTML);
+    $('#replyModal').modal('hide');
+    this.reset();
+});
