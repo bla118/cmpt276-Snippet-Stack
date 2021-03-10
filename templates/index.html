@@ -16,6 +16,23 @@
   </head>
   
   <body style="background-color: #a8a7a7;">
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>;
+      <df-messenger
+        intent="WELCOME"
+        chat-title="SnippetStack"
+        agent-id="9bcf2438-9115-4688-bd26-72f3c81ded14"
+        language-code="en"
+      ></df-messenger>
+      <style>
+        df-messenger {
+        --df-messenger-bot-message: #007bff;
+        --df-messenger-button-titlebar-color: #007bff;
+        --df-messenger-chat-background-color: #fafafa;
+        --df-messenger-font-color: white;
+        --df-messenger-send-icon: #007bff;
+        --df-messenger-user-message: #479b3d;
+        }
+      </style>
     <div class="backgroundImage">
       <!-- nav -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
