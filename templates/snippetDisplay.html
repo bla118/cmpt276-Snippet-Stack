@@ -386,7 +386,7 @@
       }
 
       // make a call to the backend to update database
-      let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(id)});
+      let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(contents)});
 
       snippets[currentSnippetIndex].setValue(contents);
       $('#editModal').modal('hide');
