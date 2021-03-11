@@ -35,6 +35,8 @@ To run this project in development mode, use:\
 <br>
 <br>
 <img src="static/featureScreenshots/search_2.png" width="480">
+<br>
+<br>
 <b>Chatbot</b>\
 <img src="static/featureScreenshots/chatbot1.png" width="480">
 <br>
