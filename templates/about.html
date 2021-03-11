@@ -80,16 +80,16 @@
                     <label for="language-box" class="col-form-label">Language</label>
                     <select class="form-select form-control" id="language-box" name="language">
                       <option value="python" selected>Python</option>
-                      <option value="clike">C</option>
-                      <option value="clike">C++</option>
-                      <option value="clike">C#</option>
-                      <option value="clike">Objective-C</option>
-                      <option value="clike">Java</option>
-                      <option value="clike">Kotlin</option>
-                      <option value="clike">Ceylon</option>
-                      <option value="clike">Scala</option>
+                      <option value="c">C</option>
+                      <option value="c++">C++</option>
+                      <option value="c#">C#</option>
+                      <option value="objective-c">Objective-C</option>
+                      <option value="java">Java</option>
+                      <option value="kotlin">Kotlin</option>
+                      <option value="ceylon">Ceylon</option>
+                      <option value="scala">Scala</option>
                       <option value="css">CSS</option>
-                      <option value="htmlmixed">HTML</option>
+                      <option value="html">HTML</option>
                       <option value="javascript">JavaScript</option>
                       <option value="jsx">JSX</option>
                       <option value="sql">SQL</option>
@@ -149,5 +149,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/jsx/jsx.min.js"></script>
     <!-- shell script  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
+    <script src="{{ url_for('static', 'Endpoints.js') }}"></script>
     <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
 </html>

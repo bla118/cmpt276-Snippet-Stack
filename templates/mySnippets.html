@@ -602,9 +602,9 @@
     <!-- shell script  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 
+    <script src="{{ url_for('static', 'Endpoints.js') }}"></script>
     <script src="{{ url_for('static', filename='initializeReplyPopup.js') }}"></script>
     <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
-    <script src="{{ url_for('static', filename='snippetDisplayController.js') }}"></script>
     <script>
         // event handler for when user searches for snippets in library
         document.getElementById("filterSnippets").addEventListener('submit', async function (event) {

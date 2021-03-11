@@ -9,6 +9,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 snippets = []
+replies = []
 class User:
     def __init__(self, id, username, password):
         self.id = id
@@ -51,6 +52,13 @@ def get_snippet_list(data, user):
 
     return snippets
 
+def get_comments_list(data, user):
+    comments = []
+    for d in data:
+        if d:
+            comments.append(Reply(d, user))
+    return comments
+
 @app.before_request
 def before_request():
     g.user = None
@@ -77,6 +85,9 @@ def start():
 def activePage():
     return render_template("active.html")
 
+@app.route('/about')
+def about():
+    return render_template("about.html")
 
 @app.route('/notyetimplemented')
 def notyetimplementedPage():
@@ -308,6 +319,9 @@ def get_comments_for_snippet():
             cursor = conn.cursor()
             cursor.execute("SELECT c.commenting_user, c.comment_text FROM Comments c JOIN Snippets s ON c.snippet_id = s.id WHERE c.snippet_id = ?", [snippet_id])
             res = cursor.fetchall()
+            global replies
+            replies = get_comments_list(res, g.user)
+            print(replies)
             return json.dumps(res)
     except Exception as e:
         print(e)

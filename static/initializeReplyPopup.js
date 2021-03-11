@@ -20,11 +20,11 @@ var replyQuill = new Quill('#replyEditor', {
 document.getElementById("reply-form").addEventListener('submit', async function (event) {
     event.preventDefault();
     // get form values
-    //****************TODO*******************
+    var data = replyQuill.root.innerHTML;
 
     // make a call to the backend to update database
-    //****************TODO*******************
-    console.log(replyQuill.root.innerHTML);
+    let res = await fetch(urlForComments, {method: 'POST', body: JSON.stringify(data)});
+    // console.log(replyQuill.root.innerHTML);
     $('#replyModal').modal('hide');
     this.reset();
 });
