@@ -93,7 +93,10 @@ def about():
 def notyetimplementedPage():
     return render_template("notyetimplemented.html")
 
-
+@app.route('/about')
+def about():
+    return render_template("about.html")
+    
 @app.route('/login', methods=['POST','GET'])
 def login():
     ''' Handles user login by finding matching username and password record from teh Users database '''
