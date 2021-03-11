@@ -137,8 +137,8 @@ def add_snippet():
         try:
             cursor = conn.cursor()
             private = 1 if data['private'] else 0
-            cursor.execute("INSERT INTO Snippets(name, language, code, author, private) VALUES (?,?,?,?,?)", 
-            [data['name'].lower(), data['language'].lower(), data['code'], g.user, private])
+            cursor.execute("INSERT INTO Snippets(name, language, code, author, private, likes) VALUES (?,?,?,?,?,?)", 
+            [data['name'].lower(), data['language'].lower(), data['code'], g.user, private, 0])
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
@@ -224,6 +224,73 @@ def request_snippet():
         return redirect(url_for("home"))
     except Exception:
         return jsonify(message="Error"), 400
+
+
+@app.route('/api/comment_snippet', methods=['POST'])
+def comment_snippet():
+    ''' Receives a JSON object of user id, snippet id (the snippet being commented on) and comment text and inserts them into the Comments table '''
+    if not g.user:
+        return redirect(url_for("login"))
+
+    data = request.data.decode('ascii')
+    data = json.loads(data)
+    try:
+        username = data['username']
+        snippet_id = int(data['snippet_id'])
+        comment_text = data['comment_text']
+        with sqlite3.connect('Snippets.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Comments(snippet_id, commenting_user, comment_text) VALUES(?,?,?)", [snippet_id, username, comment_text])
+        return jsonify(message="Successfully added comment")
+    except Exception as e:
+        print(e)
+        return jsonify(message="Error"), 400
+
+
+@app.route('/api/get_comments_for_snippet', methods=['POST'])
+def get_comments_for_snippet():
+    ''' Receives a JSON object of snippet id and fetches all comments made on this snippet '''
+    if not g.user:
+        return redirect(url_for("login"))
+
+    data = request.data.decode('ascii')
+    data = json.loads(data)
+    try:
+        snippet_id = int(data['snippet_id'])
+        with sqlite3.connect('Snippets.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT c.commenting_user, c.comment_text FROM Comments c JOIN Snippets s ON c.snippet_id = s.id WHERE c.snippet_id = ?", [snippet_id])
+            res = cursor.fetchall()
+            return json.dumps(res)
+    except Exception as e:
+        print(e)
+        return jsonify(message="Error"), 400
+
+
+@app.route('/api/like_snippet', methods=['POST'])
+def like_snippet():
+    ''' Receives a JSON object of snippet id, adds a like to that snippet and returns the new like count in JSON format. Unliking a post or cancelling a like is currently not supported'''
+    if not g.user:
+        return redirect(url_for("login"))
+        
+    data = request.data.decode('ascii')
+    data = json.loads(data)
+    try:
+        snippet_id = int(data['snippet_id'])
+        with sqlite3.connect('Snippets.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Snippets SET likes = likes + 1 where id = ?", [snippet_id])
+            cursor.execute("SELECT likes FROM Snippets WHERE id = ?", [snippet_id])
+            new_like_count = cursor.fetchone()
+            return json.dumps(new_like_count)
+    except Exception as e:
+        print(e)
+        return jsonify(message="Error"), 400
+
+
+@app.route('/api/edit_snippet', methods=['POST'])
+def edit_snippet():
+    pass
 
 
 if __name__ == '__main__':
