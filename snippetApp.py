@@ -92,10 +92,6 @@ def about():
 @app.route('/notyetimplemented')
 def notyetimplementedPage():
     return render_template("notyetimplemented.html")
-
-@app.route('/about')
-def about():
-    return render_template("about.html")
     
 @app.route('/login', methods=['POST','GET'])
 def login():
