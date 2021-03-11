@@ -8,13 +8,48 @@ app.secret_key = os.urandom(20)
 basedir = os.path.abspath(os.path.dirname(__file__))
 # app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-
+snippets = []
 class User:
     def __init__(self, id, username, password):
         self.id = id
         self.username = username
         self.password = password
 
+class Snippet:
+    def __init__(self, data, request_user):
+        self.id = data[0]
+        self.name = data[1]
+        self.language = data[2]
+        self.code = data[3]
+        self.likes = data[4]
+        self.user = data[5]
+        self.request_user = request_user
+        # self.ispublic = public
+
+    def belongsToUser(self):
+        return self.user == self.request_user
+
+    def isPublic(self):
+        return self.ispublic
+
+class Reply:
+    def __init__(self, id, contents, user, likes, request_user):
+        self.id = id
+        self.contents = contents
+        self.user_id = user
+        self.likes = likes
+        self.request_user = request_user
+
+    def belongsToUser(self):
+        return self.user_id == self.request_user
+
+def get_snippet_list(data, user):
+    snippets = []
+    for d in data:
+        if d:
+            snippets.append(Snippet(d, user))
+
+    return snippets
 
 @app.before_request
 def before_request():
@@ -47,9 +82,6 @@ def activePage():
 def notyetimplementedPage():
     return render_template("notyetimplemented.html")
 
-@app.route('/snippetDisplay')
-def snippetDisplay():
-    return render_template("snippetDisplay.html")
 
 @app.route('/login', methods=['POST','GET'])
 def login():
@@ -124,6 +156,11 @@ def search():
         return redirect(url_for("login"))
     return render_template("search.html")
 
+@app.route('/snippetDisplay')
+def snippetDisplay():
+    if not g.user:
+        return redirect(url_for("login"))
+    return render_template("snippetDisplay.html", snippets=snippets)
 
 @app.route('/api/create_snippet', methods=['GET', 'POST'])
 def add_snippet():
@@ -131,6 +168,8 @@ def add_snippet():
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
+
+
     data = request.data.decode('ascii')
     data = json.loads(data)
     with sqlite3.connect('Snippets.db') as conn:
@@ -143,15 +182,17 @@ def add_snippet():
         except Exception:
             return jsonify(message="Error"), 400
 
-
 @app.route('/api/fetch_snippet', methods=['GET', 'POST'])
 def fetch_snippet():
     ''' Fetches matching snippets from database by langauge and snippet name. Unlike other endpoints, this one takes a Js fetch request instead of Flask form '''
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
+        return render_template("home.html", username=g.user)
+        
     data = request.data.decode('ascii')
     data = json.loads(data)
+
     try:
         language = data['language'].lower()
         search_key = data['search_key'].lower()
@@ -168,9 +209,15 @@ def fetch_snippet():
                 cursor.execute("SELECT * FROM Snippets WHERE language=? AND name LIKE ? AND (private <> 1 OR private IS NULL) UNION SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
                 [language, f'%{search_key}%', g.user, language, f'%{search_key}%'])
             data = cursor.fetchall()
+            global snippets
+            snippets = get_snippet_list(data, g.user)
+            print(snippets)
             return json.dumps(data)
     except Exception:
         return jsonify(message="Error"), 400
+
+
+
 
 
 @app.route('/api/delete_snippet', methods=['GET', 'POST'])
