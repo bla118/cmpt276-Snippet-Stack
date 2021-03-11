@@ -22,8 +22,8 @@ class Snippet:
         self.name = data[1]
         self.language = data[2]
         self.code = data[3]
-        self.likes = data[4]
-        self.user = data[5]
+        self.user = data[4]
+        self.likes = data[5]
         self.request_user = request_user
         # self.ispublic = public
 
@@ -219,6 +219,7 @@ def fetch_snippet():
                 cursor.execute("SELECT * FROM Snippets WHERE language=? AND name LIKE ? AND (private <> 1 OR private IS NULL) UNION SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
                 [language, f'%{search_key}%', g.user, language, f'%{search_key}%'])
             data = cursor.fetchall()
+            print(data)
             global snippets
             snippets = get_snippet_list(data, g.user)
             print(snippets)
