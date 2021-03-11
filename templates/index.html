@@ -106,18 +106,18 @@
                     <label for="language-box" class="col-form-label">Language</label>
                     <select class="form-select form-control" id="language-box" name="language-box">
                       <option value="python" selected>Python</option>
-                      <option value="clike">C</option>
-                      <option value="clike">C++</option>
-                      <option value="clike">C#</option>
-                      <option value="clike">Objective-C</option>
-                      <option value="clike">Java</option>
-                      <option value="clike">Kotlin</option>
+                      <option value="c">C</option>
+                      <option value="c++">C++</option>
+                      <option value="csharp">C#</option>
+                      <option value="objectivec">Objective-C</option>
+                      <option value="java">Java</option>
+                      <option value="kotlin">Kotlin</option>
                       <option value="clike">Ceylon</option>
-                      <option value="clike">Scala</option>
+                      <option value="scala">Scala</option>
                       <option value="css">CSS</option>
-                      <option value="htmlmixed">HTML</option>
+                      <option value="html">HTML</option>
                       <option value="javascript">JavaScript</option>
-                      <option value="jsx">JSX</option>
+                      <option value="javascript">JSX</option>
                       <option value="sql">SQL</option>
                       <option value="shell">Shell</option>
                       <option value="xml">XML</option>
@@ -141,7 +141,7 @@
                 <!-- <textarea id="topic-content-box"></textarea> -->
                 <div id="topic-content-box"></div>
               </div>
-              <button type="submit" class="btn btn-primary">Post!</button>
+              <button id="submit-button" class="btn btn-primary">Post!</button>
             </form>
           </div>
         </div>
@@ -204,8 +204,8 @@
         codeEditor.setValue("");
     })
 
-      // let urlForCreate = 'http://127.0.0.1:5000/api/create_snippet';
-      let urlForCreate = "https://snippet-stack.herokuapp.com/api/create_snippet";
+      let urlForCreate = 'http://127.0.0.1:5000/api/create_snippet';
+      // let urlForCreate = "https://snippet-stack.herokuapp.com/api/create_snippet";
 
       async function postData(data) {
           const response = await fetch(urlForCreate,
@@ -218,7 +218,7 @@
           let topicBox = document.getElementById("topic-box");
           let languageBox = document.getElementById("language-box");
           let codeBox = document.getElementById("topic-content-box");
-          let privateBox = document.getElementById("private-check-box");
+          let privateBox = document.getElementById("create-private-check-box");
 
           data['name'] = topicBox.value;
           data['language'] = languageBox.value;
@@ -229,10 +229,10 @@
           alert("Snippet created!");
 
           // document.getElementById("topic-form").reset();
-          topicBox.innerText = "";
-          languageBox.innerText = "";
-          codeBox.innerText = "";
-          topicBox.checked = false;
+          // topicBox.innerText = "";
+          // languageBox.innerText = "";
+          // codeBox.innerText = "";
+          // topicBox.checked = false;
       });
     </script>
 </body>
