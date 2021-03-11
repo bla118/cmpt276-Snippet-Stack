@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../static/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/theme/dracula.min.css">
-    <title>Home Page</title>
+    <title>Not Implemented</title>
   </head>
   <body>
     <!-- nav -->
@@ -26,26 +26,26 @@
               <i class="fa fa-user-circle" aria-hidden="true"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="userProfileMenuButton">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="{{ url_for('notyetimplementedPage') }}">Profile</a>
+              <a class="dropdown-item" href="{{ url_for('notyetimplementedPage') }}">Settings</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ url_for('login') }}" style="color: red;">Logout</a>
             </div>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('home') }}">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('search') }}">Search</a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Recommended<span class="sr-only">(current)</span></a>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Featured<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Today</a>
+            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">My Snippets</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Trending</a>
+            <a class="nav-link" href="{{ url_for('about') }}">About</a>
           </li>
       </div>
       <div class="flex-nav">

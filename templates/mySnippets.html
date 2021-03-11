@@ -33,8 +33,8 @@
               <i class="fa fa-user-circle" aria-hidden="true"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="userProfileMenuButton">
-              <a class="dropdown-item" href="#">Profile</a>
-              <a class="dropdown-item" href="#">Settings</a>
+              <a class="dropdown-item" href="{{ url_for('notyetimplementedPage') }}">Profile</a>
+              <a class="dropdown-item" href="{{ url_for('notyetimplementedPage') }}">Settings</a>
               <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ url_for('login') }}" style="color: red;">Logout</a>
             </div>
@@ -45,14 +45,14 @@
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('search') }}">Search</a>
           </li>
-          <li class="nav-item">
+          <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">Featured</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">My Snippets<span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('notyetimplementedPage') }}">About</a>
+            <a class="nav-link" href="{{ url_for('about') }}">About</a>
           </li>
       </div>
       <div class="flex-nav">
