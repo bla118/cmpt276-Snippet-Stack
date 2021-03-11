@@ -76,7 +76,7 @@
                   <div class="col">
                     <div class="form-group">
                       <label for="topic-box" class="col-form-label">Snippet</label>
-                      <input type="text" class="form-control" id="topic-box" name="topic" placeholder="e.g. Iterative DFS" required>
+                      <input type="text" class="form-control" id="topic-box" name="name" placeholder="e.g. Iterative DFS" required>
                     </div>
                   </div>
                   <div class="col">
@@ -125,18 +125,18 @@
       </div>
     </div>
 
-    <div class="search-window">
+    <div id="search-window" class="search-window">
         <h1 style="text-align: center;">Search Snippets</h1>
-        <form role="form" enctype=multipart/form-data action="{{url_for('snippetDisplay')}}" method="GET">
+        <form id="searchForm" role="form" enctype=multipart/form-data novalidate>
             <div class="form-group">
                 <label for="search_term" class="col-form-label">Search Term</label>
-                <input id="search_term" class="form-control" type="text" name="searchTerm" placeholder="e.g. Python while loop" >
+                <input id="search_term" class="form-control" type="text" name="search_key" placeholder="e.g. Python while loop" >
             </div>
             <div class="form-group">
                 <label for="language_field" class="col-form-label">Target Language</label><br>
-                <input id="language_field" class="form-control" type="text" name="snippetLanguage" placeholder="e.g. Python" required>
+                <input id="language_field" class="form-control" type="text" name="language" placeholder="e.g. Python" required>
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" value="" id="private-check-box" name="private-check-box">
+                    <input class="form-check-input" type="checkbox" value="" id="private-check-box" name="private" required>
                     <label class="form-check-label" for="private-check-box">
                     Search Private Snippets
                     </label>
@@ -158,14 +158,14 @@
             </code>
         </pre> -->
     </div>
-    <div style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
+    <div id="search-window-bottom" style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
       <p>Can't find snippet? Try <a href="{{ url_for('request_snippet_page') }}">requesting</a> for one!</p>
     </div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script src="static/searchController.js"></script>
+<!-- <script src="static/searchController.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
 
@@ -188,4 +188,22 @@
 <!-- shell script  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
+<script>
+  let urlForSearch = "http://127.0.0.1:5000/api/fetch_snippet";
+
+  document.getElementById("searchForm").addEventListener('submit', async function() {
+    let data = {};
+    data['language'] = document.getElementById("language_field").value;
+    data['search_key'] = document.getElementById("search_term").value;
+    data['private'] = document.getElementById("private-check-box").checked;
+    console.log(data);
+    // const response = await fetch("http://127.0.0.1:5000/api/fetch_snippet", {method: 'GET', body: JSON.stringify(data)});
+    console.log(urlForSearch);
+    const response = await fetch(urlForSearch,
+                                {method: 'POST', body: JSON.stringify(data)});
+    let res = await response.json();
+
+    window.location.replace("http://127.0.0.1:5000/snippetDisplay");
+  })
+</script>
 </html>

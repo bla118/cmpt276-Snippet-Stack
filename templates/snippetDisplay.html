@@ -208,7 +208,7 @@ function getPrivateChecked(){
 
     <!-- snippets are displayed here -->
     <div id="snippet-display" class="snippet-display">
-        {% if len(snippets) == 0 %}
+        {% if snippets | length == 0 %}
         <h1 style="width: 100%; text-align: center;">Sorry, we could not find any snippets!</h1>
         {% else %}
         {% for s in snippets %}
@@ -225,7 +225,7 @@ function getPrivateChecked(){
               {% endif %}
           </div>
           <!-- source code of snippet -->
-          <div id="{{ s.id }_raw" class="snippet-body">
+          <div id="{{ s.id }}_raw" class="snippet-body">
           </div>
           <!-- footer: comment (or edit), view replies options -->
           <div class="snippet-footer">
