@@ -1,19 +1,21 @@
 # Snippet Stack
+
 This project is deployed at: https://snippet-stack.herokuapp.com
 
 ## Dependencies
+
 Python 3.6\
 SQLite 3.34.0\
 Flask 1.1.2
 
-
 ## Installation
+
 To run this project in development mode, use:\
 `pip install -r requirements.txt`\
 `python3 snippetApp.py`
 
-
 ## Demo
+
 <b>Login / Registration:</b>\
 <img src="static/featureScreenshots/login.png" width="480">
 <br>
@@ -33,3 +35,11 @@ To run this project in development mode, use:\
 <br>
 <br>
 <img src="static/featureScreenshots/search_2.png" width="480">
+<b>Chatbot</b>\
+<img src="static/featureScreenshots/chatbot1.png" width="480">
+<br>
+<br>
+<img src="static/featureScreenshots/chatbot2.png" width="480">
+<br>
+<br>
+<img src="static/featureScreenshots/chatbot3.png" width="480">
