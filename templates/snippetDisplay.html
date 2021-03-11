@@ -108,12 +108,12 @@ function getPrivateChecked(){
                   <div class="col">
                     <div class="form-group">
                       <label for="topic-box" class="col-form-label">Snippet</label>
-                      <input type="text" class="form-control" id="topic-box" placeholder="e.g. Iterative DFS" required>
+                      <input type="text" class="form-control" id="topic-box" name="name" placeholder="e.g. Iterative DFS" required>
                     </div>
                   </div>
                   <div class="col">
                     <label for="language-box" class="col-form-label">Language</label>
-                    <select class="form-select form-control" id="language-box" name="language-box">
+                    <select class="form-select form-control" id="language-box" name="language">
                       <option value="python" selected>Python</option>
                       <option value="clike">C</option>
                       <option value="clike">C++</option>
@@ -137,7 +137,7 @@ function getPrivateChecked(){
 
               <!-- privacy -->
               <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private-check-box">
+                <input class="form-check-input" type="checkbox" value="" id="create-private-check-box" name="private">
                 <label class="form-check-label" for="create-private-check-box">
                   Make snippet private
                 </label>
