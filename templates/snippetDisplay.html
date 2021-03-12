@@ -163,7 +163,7 @@
           <!-- the start new topic form -->
           <div class="modal-body">
               <!-- reply box -->
-              <form id="submitUpdatedSnippet" role="form" id="reply-form" enctype=multipart/form-data novalidate>
+              <form id="submitUpdatedSnippet" role="form" enctype=multipart/form-data novalidate>
                 <div class="form-group">
                   <div id="editEditor"></div>
                 </div>
@@ -184,7 +184,7 @@
           <!-- header: user info, delete option(if snippet belongs to you) -->
           <div class="snippet-header">
               <div class="snippet-title">
-                  {{ s.language }}: {{ s.name }}
+                  {{ s.language }}: {{ s.name }}: by {{ s.user }}
               </div>
               {% if s.belongsToUser() %}
               <button type="button" class="btn btn-link view-replies-btn" style="color: red;" onclick="deleteSnippet()">
@@ -201,7 +201,7 @@
                   <button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">
                       View Comments
                   </button>
-                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal">
+                  <button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">
                       Comment
                   </button>
                   {% if s.belongsToUser() %}
@@ -268,6 +268,7 @@
   // configure the displaays
   {% for i in range(snippets | length) %}
   snippetDisplay.setValue({{ snippets[i].code | tojson | safe }});
+  snippetDisplay.setOption('mode', {{ snippets[i].language | tojson | safe }});
   {% endfor %}
 
   for (s of snippets) {
