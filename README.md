@@ -28,9 +28,6 @@ To run this project in development mode, use:\
 <br>
 <br>
 <b>Search snippets</b>\
-<img src="static/featureScreenshots/search_snippet.png" width="480">
-<br>
-<br>
 <img src="static/featureScreenshots/search_1.png" width="480">
 <br>
 <br>
