@@ -145,7 +145,6 @@ def register():
     return render_template("login.html")
 
 
-
 @app.route('/home')
 def home():
     if not g.user:
@@ -166,6 +165,7 @@ def search():
         return redirect(url_for("login"))
     return render_template("search.html")
 
+
 @app.route('/snippetDisplay')
 def snippetDisplay():
     if not g.user:
@@ -178,8 +178,6 @@ def add_snippet():
     if request.method == 'GET':
         if not g.user:
             return redirect(url_for("login"))
-
-
     data = request.data.decode('ascii')
     data = json.loads(data)
     with sqlite3.connect('Snippets.db') as conn:
@@ -191,6 +189,7 @@ def add_snippet():
             return jsonify(message="Successfully created new snippet"), 201
         except Exception:
             return jsonify(message="Error"), 400
+
 
 @app.route('/api/fetch_snippet', methods=['GET', 'POST'])
 def fetch_snippet():
@@ -226,9 +225,6 @@ def fetch_snippet():
             return json.dumps(data)
     except Exception:
         return jsonify(message="Error"), 400
-
-
-
 
 
 @app.route('/api/delete_snippet', methods=['GET', 'POST'])
@@ -351,7 +347,21 @@ def like_snippet():
 
 @app.route('/api/edit_snippet', methods=['POST'])
 def edit_snippet():
-    pass
+    if not g.user:
+        return redirect(url_for("login"))
+        
+    data = request.data.decode('ascii')
+    data = json.loads(data)
+    try:
+        snippet_id = int(data['snippet_id'])
+        edited_code = data['edited_code']
+        with sqlite3.connect('Snippets.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute("UPDATE Snippets SET code = ? where id = ?", [edited_code, snippet_id])
+            return jsonify(message="Successfully updated snippet")
+    except Exception as e:
+        print(e)
+        return jsonify(message="Error"), 400
 
 
 if __name__ == '__main__':
