@@ -201,9 +201,10 @@
     console.log(urlForSearch);
     const response = await fetch(urlForSearch,
                                 {method: 'POST', body: JSON.stringify(data)});
+    console.log("submitted!");
     let res = await response.json();
     let endpoint = "{{ url_for('snippetDisplay') }}";
-    window.location.replace(baseURL + endpoint);
+    window.location.href = baseURL + endpoint;
   })
 </script>
 </html>
