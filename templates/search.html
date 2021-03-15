@@ -203,6 +203,8 @@
                                 {method: 'POST', body: JSON.stringify(data)});
     console.log("submitted!");
     let res = await response.json();
+
+    // id, name, lang, code, owner, user, likes
     let endpoint = "{{ url_for('snippetDisplay') }}";
     window.location.href = baseURL + endpoint;
   })

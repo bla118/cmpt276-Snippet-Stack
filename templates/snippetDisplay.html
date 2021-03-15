@@ -250,6 +250,7 @@
 <script src="{{ url_for('static', filename='initializeReplyPopup.js') }}"></script>
 <script>
   var currentSnippetIndex; // keeps track of the current snippet being edited
+  var currentSnippetID;
   var snippetDisplay;
   var snippets = [];
   var allCode = document.getElementById("snippet-display").getElementsByClassName("snippet-body");
@@ -282,6 +283,103 @@
     theme: 'dracula'
   });
   snippetEditor.refresh();
+
+  // later
+  function appendSnippet(id, lang, name, owner, likes, user) {
+    var s = document.createElement('div');
+    s.className = "flex-snippet";
+    s.id = id;
+
+    // header
+    var header = document.createElement('div');
+    title.className = "snippet-header";
+    var title = document.createElement('div');
+    title.className = "snippet-title";
+    var t = document.createTextNode(`${lang}: ${name}: by ${owner}`);
+    title.appendChild(t);
+    header.appendChild(title);
+    if (owner == user) {
+      let trashButton = document.createElement('button');
+      trashButton.type = "button";
+      trashButton.className = "btn btn-link view-replies-btn";
+      trashButton.style.color = "red";
+      trashButton.addEventListener('click',   async function() {
+        if (confirm("Are you sure you want to delete this snippet?")) {
+          var el = this.parentNode.parentNode;
+          var i = Array.from(document.getElementById("snippet-display").getElementsByClassName("flex-snippet")).indexOf(el);
+
+          // delete the code display for that snippet
+          snippets.splice(i, 1);
+          if (snippets.length == 0) {
+            el.parentNode.innerHTML = "<h1 style=\"width: 100%; text-align: center;\">No more snippets!</h1>";
+          }
+          el.parentNode.removeChild(el);
+          // make a call to the backend to update database
+          const response = await fetch(urlForDelete,
+                                    {method: 'POST', body: JSON.stringify(data)});
+        }
+      });
+      header.appendChild(trashButton);
+    }
+
+    s.appendChild(header);
+
+    // body
+    var body = document.createElement('div');
+    body.className = "snippet-body";
+    body.id = `${id}_raw`;
+
+    s.appendChild(body);
+
+    // footer
+    var footer = document.createElement('div');
+    footer.className = "snippet-footer";
+    var container = document.createElement('div');
+    container.innerHTML = `<button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">` +
+                              `View Comments`+
+                          `</button>` +
+                          `<button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">` +
+                              `Comment` +
+                          `</button>`
+
+    if (user == owner) {
+      container.innerHTML = `<button type="button" class="btn btn-link view-replies-btn" onclick="getReplies()">` +
+                              `View Comments`+
+                            `</button>` +
+                            `<button type="button" class="btn btn-link" data-toggle="modal" data-target="#replyModal" onclick="addReply()">` +
+                                `Comment` +
+                            `</button>` + 
+                            `<button type="button" class="btn btn-link" data-toggle="modal" data-target="#editModal" onclick="editSnippet()">` +
+                                `<i class="fa fa-pencil" aria-hidden="true"></i>Edit` +
+                            `</button>`
+    }
+    footer.appendChild(container);
+    var likesButton = document.createElement('button');
+    likesButton.type = "button";
+    likesButton.className = "btn btn-link";
+    likesButton.addEventListener('click', async function() {
+      this.disabled = true;
+      var snippetEl = this.parentNode.parentNode;
+      var i = Array.from(document.getElementById("snippet-display").children).indexOf(snippetEl);
+
+      var likesEl = this.firstChild;
+      var likes = parseInt(likesEl.nodeValue, 10) + 1;
+
+      event.preventDefault(); // dont refresh: front end will dynamically change value
+      // make a call to the backend to update database
+      let res = await fetch(urlForLikes, {method: 'POST', body: JSON.stringify(snippetEl.id)});
+      if (res.status != 400) {
+        // increment likes
+        likesEl.nodeValue = likes;
+      }
+    });
+    likesButton.innerHTML = `${likes}<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>`
+    footer.appendChild(likesButton);
+    
+    s.appendChild(footer);
+
+    document.getElementById("snippet-display").appendChild(s);
+  }
 
   // returns the defined mime type for code editor
   function getLanguageFromSnippetTitle(lang) {
@@ -342,6 +440,7 @@
       snippetEditor.setValue(snippets[i].getValue());
       // save the index for form submission
       currentSnippetIndex = i;
+      currentSnippetID = snippetEl.parentNode.id;
   }
 
   // increment the likes count of the snippet
@@ -381,6 +480,7 @@
 
       // get the code from the editor
       // copy the code into the current snippet
+      var data = {};
       var contents = snippetEditor.getValue();
       console.log(typeof(contents));
       console.log(contents);
@@ -389,8 +489,11 @@
         return false;
       }
 
+      data['edited_code'] = contents;
+      data['snippet_id'] = currentSnippetID;
+
       // make a call to the backend to update database
-      let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(contents)});
+      let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(data)});
 
       snippets[currentSnippetIndex].setValue(contents);
       $('#editModal').modal('hide');

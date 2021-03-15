@@ -23,7 +23,7 @@ class Snippet:
         self.language = data[2]
         self.code = data[3]
         self.user = data[4]
-        self.likes = data[5]
+        self.likes = data[6]
         self.request_user = request_user
         # self.ispublic = public
 
