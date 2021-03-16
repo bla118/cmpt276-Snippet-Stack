@@ -197,6 +197,7 @@
     data['search_key'] = document.getElementById("search_term").value;
     data['private'] = document.getElementById("private-check-box").checked;
     console.log(data);
+    let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
     // const response = await fetch("http://127.0.0.1:5000/api/fetch_snippet", {method: 'GET', body: JSON.stringify(data)});
     console.log(urlForSearch);
     const response = await fetch(urlForSearch,
