@@ -17,7 +17,7 @@
   
 <body style="background-color: #a8a7a7;">
     <!-- nav -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="z-index: 2;">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -125,46 +125,99 @@
       </div>
     </div>
 
-    <div id="search-window" class="search-window">
-        <h1 style="text-align: center;">Search Snippets</h1>
-        <form id="searchForm" role="form" enctype=multipart/form-data novalidate>
-            <div class="form-group">
-                <label for="search_term" class="col-form-label">Search Term</label>
-                <input id="search_term" class="form-control" type="text" name="search_key" placeholder="e.g. Python while loop" >
-            </div>
-            <div class="form-group">
-                <label for="language_field" class="col-form-label">Target Language</label><br>
-                <input id="language_field" class="form-control" type="text" name="language" placeholder="e.g. Python" required>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" value="" id="private-check-box" name="private" required>
-                    <label class="form-check-label" for="private-check-box">
-                    Search Private Snippets
-                    </label>
+    <!-- pop up form for replying -->
+    <div class="modal fade" tabindex="-1" id="replyModal" role="dialog" aria-labelledby="#reply" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="reply">Your reply:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+              <!-- reply box -->
+              <form role="form" id="reply-form" enctype=multipart/form-data novalidate>
+              <div class="form-group">
+                  <div id="replyEditor" style="height: 250px;">
+                  </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Post!</button>
+              </form>
+          </div>
+          </div>
+      </div>
+    </div>
+  
+    <!-- pop up form for editing snippet -->
+    <div class="modal fade" tabindex="-1" id="editModal" role="dialog" aria-labelledby="#edit" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="edit">My Snippet:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+              <!-- reply box -->
+              <form id="submitUpdatedSnippet" role="form" enctype=multipart/form-data novalidate>
+                <div class="form-group">
+                  <div id="editEditor"></div>
                 </div>
-            </div>
-            
-            <button id="submit_button" class="btn btn-primary" type="submit">Submit</button>
-        </form>
+                <button type="submit" class="btn btn-primary">Post!</button>
+              </form>
+          </div>
+          </div>
+      </div>
+    </div>
 
-        <!-- <a id="linkToHome" href="{{ url_for('home') }}">Cancel</a> -->
-        <!-- <div id="search-results"></div> -->
-        <!-- <button id="test_button">Test Button</button> -->
-        <!-- <pre>
-            <code class="python">
-                with sqlite3.connect('Snippets.db') as conn:
-                try:
-                    cursor = conn.cursor()
-                    cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
-            </code>
-        </pre> -->
+    <div id="container">
+      <div id="search-window" class="search-window">
+          <h1 style="text-align: center;">Search Snippets</h1>
+          <form id="searchForm" role="form" enctype=multipart/form-data novalidate>
+              <div class="form-group">
+                  <label for="search_term" class="col-form-label">Search Term</label>
+                  <input id="search_term" class="form-control" type="text" name="search_key" placeholder="e.g. Python while loop" >
+              </div>
+              <div class="form-group">
+                  <label for="language_field" class="col-form-label">Target Language</label><br>
+                  <input id="language_field" class="form-control" type="text" name="language" placeholder="e.g. Python" required>
+                  <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" value="" id="private-check-box" name="private" required>
+                      <label class="form-check-label" for="private-check-box">
+                      Search Private Snippets
+                      </label>
+                  </div>
+              </div>
+              
+              <button id="submit_button" class="btn btn-primary" type="submit">Submit</button>
+          </form>
+
+          <!-- <a id="linkToHome" href="{{ url_for('home') }}">Cancel</a> -->
+          <!-- <div id="search-results"></div> -->
+          <!-- <button id="test_button">Test Button</button> -->
+          <!-- <pre>
+              <code class="python">
+                  with sqlite3.connect('Snippets.db') as conn:
+                  try:
+                      cursor = conn.cursor()
+                      cursor.execute("INSERT INTO Snippets(name, language, code) VALUES (?,?,?)", 
+              </code>
+          </pre> -->
+      </div>
+      <div id="search-window-bottom" style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
+        <p>Can't find snippet? Try <a href="{{ url_for('request_snippet_page') }}">requesting</a> for one!</p>
+      </div>
     </div>
-    <div id="search-window-bottom" style="position: absolute; width: 100%; margin: 0 auto; text-align: center;">
-      <p>Can't find snippet? Try <a href="{{ url_for('request_snippet_page') }}">requesting</a> for one!</p>
-    </div>
+    <div id="snippet-display" class="snippet-display"></div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <!-- <script src="static/searchController.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/addon/display/autorefresh.min.js"></script>
@@ -189,24 +242,259 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.59.4/mode/shell/shell.min.js"></script>
 <script src="{{ url_for('static', filename='Endpoints.js') }}"></script>
 <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
+<script src="{{ url_for('static', filename='initializeReplyPopup.js') }}"></script>
 <script>
+  var currentSnippetIndex; // keeps track of the current snippet being edited
+  var currentSnippetID;
+  var snippets = [];
 
-  document.getElementById("searchForm").addEventListener('submit', async function() {
+  // the editor for editing snippets
+  var snippetEditor = new CodeMirror(document.getElementById("editEditor"), {
+    lineNumbers: true,
+    autoRefresh: true,
+    theme: 'dracula'
+  });
+  snippetEditor.refresh();
+
+  function getLanguageFromString(lang) {
+    // var re = lang.match('([^:]+):.*')[1].trim();
+    switch (lang) {
+      case 'c':
+      case 'c++': 
+      case 'c#':
+      case 'objective-c': 
+      case 'java': 
+      case 'kotlin': 
+      case 'ceylon':
+      case 'scala': 
+        return 'clike';
+        break;
+
+      case 'html': 
+        return 'htmlmixed';
+        break;
+
+      case 'python':
+        return 'python';
+        break;
+        
+      default:
+        return lang;
+    }
+  }
+
+
+  // creates a new editor
+  function appendSnippetEditor(block, lang, code) {
+    let editor = new CodeMirror(block, {
+      mode: lang,
+      lineNumbers: true,
+      readOnly: "nocursor",
+      theme: 'dracula'
+    });
+    editor.setValue(code);
+    editor.refresh();
+    snippets.push(editor);
+  }
+
+  // create a snippet container
+  function makeSnippetContainer(id, lang, name, owner, likes, user, i) {
+    var s = document.createElement('div');
+    s.className = "flex-snippet";
+    s.id = id;
+
+    // header
+    var header = document.createElement('div');
+    header.className = "snippet-header";
+    var title = document.createElement('div');
+    title.className = "snippet-title";
+    var t = document.createTextNode(`${lang}: ${name}: by ${owner}`);
+    title.appendChild(t);
+    header.appendChild(title);
+
+    if (owner == user) {
+      let trashButton = document.createElement('button');
+      trashButton.type = "button";
+      trashButton.className = "btn btn-link view-replies-btn";
+      trashButton.style.color = "red";
+      // delete button
+      trashButton.addEventListener('click',   async function() {
+        if (confirm("Are you sure you want to delete this snippet?")) {
+          var el = this.parentNode.parentNode;
+
+          // delete the code display for that snippet
+          snippets.splice(i, 1);
+          if (snippets.length == 0) {
+            el.parentNode.innerHTML = "<h1 style=\"width: 100%; text-align: center;\">No more snippets!</h1>";
+          }
+          el.parentNode.removeChild(el);
+          // make a call to the backend to update database
+          const response = await fetch(urlForDelete,
+                                    {method: 'POST', body: JSON.stringify(data)});
+        }
+      });
+      trashButton.innerHTML = "<i class=\"fa fa-trash\" aria-hidden=\"true\"></i>";
+      header.appendChild(trashButton);
+    }
+
+    s.appendChild(header);
+
+    // body
+    var body = document.createElement('div');
+    body.className = "snippet-body";
+    body.id = `${id}_raw`;
+
+    s.appendChild(body);
+
+    // footer
+    var footer = document.createElement('div');
+    footer.className = "snippet-footer";
+    var container = document.createElement('div');
+    var viewCommentsButton = document.createElement('button');
+    viewCommentsButton.type = "button";
+    viewCommentsButton.className = "btn btn-link view-replies-btn";
+    viewCommentsButton.addEventListener('click', async function() {
+        var id = this.parentNode.parentNode.parentNode.id;
+
+        // make a get call to the backend
+        let res = await fetch(urlForGettingComments, {method: 'POST', body: JSON.stringify(id)});
+
+        // redirect to active.html
+        let endpoint = "{{ url_for('activePage') }}"
+        window.location.replace(baseURL + endpoint);
+      });
+
+    viewCommentsButton.appendChild(document.createTextNode("View Replies"));
+    container.appendChild(viewCommentsButton);
+    var commentButton = document.createElement('button');
+    commentButton.type = "button";
+    commentButton.className = "btn btn-link";
+    commentButton.dataset.toggle = "modal";
+    commentButton.dataset.target = "#replyModal";
+    // commentButton.addEventListener('click', )
+    commentButton.appendChild(document.createTextNode("Comment"));
+
+    container.appendChild(commentButton);
+
+
+    if (user == owner) {
+      let editButton = document.createElement('button');
+      editButton.type = 'button';
+      editButton.className = "btn btn-link";
+      editButton.dataset.toggle = "modal";
+      editButton.dataset.target = "#editModal";
+      editButton.addEventListener('click',   function() {
+          snippetEditor.setOption("mode", getLanguageFromString(lang));
+          console.log(getLanguageFromString(lang));
+
+          // copy value into snippet text editor
+          snippetEditor.setValue(snippets[i].getValue());
+          // save the index for form submission
+          currentSnippetIndex = i;
+          currentSnippetID = id;
+      });
+      editButton.innerHTML = `<i class="fa fa-pencil" aria-hidden="true"></i>Edit`;
+      container.appendChild(editButton);
+    }
+
+    footer.appendChild(container);
+    var likesButton = document.createElement('button');
+    likesButton.type = "button";
+    likesButton.className = "btn btn-link";
+    likesButton.addEventListener('click', async function(event) {
+      this.disabled = true;
+      var snippetEl = this.parentNode.parentNode;
+
+      var likesEl = this.firstChild;
+      var likes = parseInt(likesEl.nodeValue, 10) + 1;
+
+      event.preventDefault(); // dont refresh: front end will dynamically change value
+      // make a call to the backend to update database
+      let res = await fetch(urlForLikes, {method: 'POST', body: JSON.stringify(snippetEl.id)});
+      if (res.status != 400) {
+        // increment likes
+        likesEl.nodeValue = likes;
+      }
+    });
+    likesButton.innerHTML = `${likes}<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>`
+    footer.appendChild(likesButton);
+    
+    s.appendChild(footer);
+
+    return [s, body];
+  }
+
+  function whichAnimationEvent(){
+    var t,
+        el = document.createElement("fakeelement");
+
+    var animations = {
+      "animation"      : "animationend",
+      "OAnimation"     : "oAnimationEnd",
+      "MozAnimation"   : "animationend",
+      "WebkitAnimation": "webkitAnimationEnd"
+    }
+
+    for (t in animations){
+      if (el.style[t] !== undefined){
+        return animations[t];
+      }
+    }
+  }
+
+  // search form
+  document.getElementById("searchForm").addEventListener('submit', async function(event) {
+    event.preventDefault();
     let data = {};
     data['language'] = document.getElementById("language_field").value;
     data['search_key'] = document.getElementById("search_term").value;
     data['private'] = document.getElementById("private-check-box").checked;
-    console.log(data);
-    let urlForSearch = "https://snippet-stack.herokuapp.com/api/fetch_snippet";
     // const response = await fetch("http://127.0.0.1:5000/api/fetch_snippet", {method: 'GET', body: JSON.stringify(data)});
-    console.log(urlForSearch);
+    
     const response = await fetch(urlForSearch,
                                 {method: 'POST', body: JSON.stringify(data)});
-    console.log("submitted!");
     let res = await response.json();
 
+    console.log(res['user']);
+    let animationEvent = whichAnimationEvent();
     // id, name, lang, code, owner, user, likes
-    let endpoint = "{{ url_for('snippetDisplay') }}";
+    document.getElementById("container").className = "goup";
+    $('#container').one(animationEvent, function(event) {
+        $(this).remove();
+        for(i=0;i < res['data'].length;i++) {
+          let [container, block] = makeSnippetContainer(res['data'][i][0], res['data'][i][2], res['data'][i][1], "stalin69", res['data'][i][6], res['user'], 0);
+          document.getElementById("snippet-display").appendChild(container);
+          appendSnippetEditor(block, res['data'][i][2], res['data'][i][3]);
+      }
+    });
+
+  //id, lang, name, owner, likes, user, i
+    // event handler for updating a snippet
+    document.getElementById("submitUpdatedSnippet").addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        // get the code from the editor
+        // copy the code into the current snippet
+        var data = {};
+        var contents = snippetEditor.getValue();
+        console.log(typeof(contents));
+        console.log(contents);
+        if (!contents) {
+          alert("Snippet is empty! Cannot submit empty snippet!");
+          return false;
+        }
+
+        data['edited_code'] = contents;
+        data['snippet_id'] = currentSnippetID;
+
+        // make a call to the backend to update database
+        let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(data)});
+
+        snippets[currentSnippetIndex].setValue(contents);
+        $('#editModal').modal('hide');
+    });
+
+    // let endpoint = "{{ url_for('snippetDisplay') }}";
     // window.location.href = baseURL + endpoint;
   })
 </script>
