@@ -175,6 +175,19 @@
     border-radius: .6em;
     height: 75%;
 }
+
+.goup {
+    animation: floatUp 1s ease 1;
+    z-index: 1;
+}
+@keyframes floatUp{
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-100vh);
+    }
+}
 /* .CodeMirror-gutters {
     background-color: rgb(128, 105, 105);
 } */

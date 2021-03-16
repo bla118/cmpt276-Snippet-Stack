@@ -218,11 +218,11 @@ def fetch_snippet():
                 cursor.execute("SELECT * FROM Snippets WHERE language=? AND name LIKE ? AND (private <> 1 OR private IS NULL) UNION SELECT * FROM Snippets WHERE author=? AND language=? AND name LIKE ? LIMIT 10",
                 [language, f'%{search_key}%', g.user, language, f'%{search_key}%'])
             data = cursor.fetchall()
-            print(data)
-            global snippets
-            snippets = get_snippet_list(data, g.user)
-            print(snippets)
-            return json.dumps(data)
+            dataset = {'data':data, 'user':g.user}
+
+            print(dataset)
+
+            return json.dumps(dataset)
     except Exception:
         return jsonify(message="Error"), 400
 
