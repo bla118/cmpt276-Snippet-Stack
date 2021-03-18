@@ -183,6 +183,9 @@
     justify-content: space-between;
     color: white;
 }
+pre {
+    border-radius: .4em;
+}
 .CodeMirror {
     border-radius: .6em;
     height: 75%;
