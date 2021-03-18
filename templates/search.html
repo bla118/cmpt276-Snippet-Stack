@@ -150,6 +150,31 @@
       </div>
     </div>
   
+    <!-- pop up form for editing reply -->
+    <div class="modal fade" tabindex="-1" id="editReplyModal" role="dialog" aria-labelledby="#editReply" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+          <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="editReply">Your reply:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <!-- the start new topic form -->
+          <div class="modal-body">
+              <!-- reply box -->
+              <form role="form" id="edit-reply-form" enctype=multipart/form-data>
+                <div class="form-group">
+                    <div id="editReplyEditor" style="height: 250px;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Post!</button>
+              </form>
+          </div>
+          </div>
+      </div>
+    </div>
+
     <!-- pop up form for editing snippet -->
     <div class="modal fade" tabindex="-1" id="editModal" role="dialog" aria-labelledby="#edit" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -213,6 +238,7 @@
       </div>
     </div>
     <div id="snippet-display" class="snippet-display"></div>
+    <div id="active" class="discussion-window"></div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
@@ -244,8 +270,11 @@
 <script src="{{ url_for('static', filename='initializeTopicPopup.js') }}"></script>
 <script src="{{ url_for('static', filename='initializeReplyPopup.js') }}"></script>
 <script>
-  var currentSnippetIndex; // keeps track of the current snippet being edited
-  var currentSnippetID;
+  var currentSnippetEditorIndex; // keeps track of the current snippet being edited
+  var currentSnippetElement;
+  var currentReplyElement;
+  var currentUser;
+  var viewingComments = false;
   var snippets = [];
 
   // the editor for editing snippets
@@ -255,6 +284,17 @@
     theme: 'dracula'
   });
   snippetEditor.refresh();
+
+  // highlight the code blocks in the node
+  function highlightCodeBlocks(node) {
+    // highlight code blocks
+    var replies = node.getElementsByTagName("pre");
+
+    Array.from(replies).forEach((block) => {
+      hljs.highlightBlock(block);
+    });
+    
+  }
 
   function getLanguageFromString(lang) {
     // var re = lang.match('([^:]+):.*')[1].trim();
@@ -295,6 +335,66 @@
     editor.setValue(code);
     editor.refresh();
     snippets.push(editor);
+  }
+
+  // create replies container
+  function makeCommentContainer(id, comment, owner, user) {
+    var post = document.createElement('div');
+    post.id = id;
+    post.className = "post-section";
+    var header = document.createElement('div');
+    header.className = "flex-reply-header";
+    var container = document.createElement('div');
+    container.innerHTML = `<i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>${owner}`;
+    header.appendChild(container);
+    post.appendChild(header);
+
+    var body = document.createElement('div');
+    body.id = `${id}_raw`;
+    body.innerHTML = comment;
+    post.appendChild(body);
+
+    var footer = document.createElement('div');
+    footer.className = "flex-reply-footer";
+    if (owner == user) {
+      var editButton = document.createElement('button');
+      editButton.type = 'button';
+      editButton.className = "btn btn-link";
+      editButton.dataset.toggle = "modal";
+      editButton.dataset.target = "#editReplyModal";
+      editButton.addEventListener('click', function() {
+        console.log(body.innerHTML);
+        editReplyQuill.root.innerHTML = body.innerHTML;
+        currentReplyElement = post;
+      });
+      editButton.innerHTML = `<i class="fa fa-pencil" aria-hidden="true"></i>Edit`;
+      footer.appendChild(editButton);
+    }
+
+    // var likesButton = document.createElement('button');
+    // likesButton.type = 'button';
+    // likesButton.className = "btn btn-link";
+    // likesButton.addEventListener('click', async function() {
+    //   this.disabled = true;
+
+    //   var x = parseInt(likes, 10) + 1;
+    //   data = {};
+    //   data['likes'] = x;
+
+    //   event.preventDefault(); // dont refresh: front end will dynamically change value
+    //   // make a call to the backend to update database
+    //   let res = await fetch(urlForLikes, {method: 'POST', body: JSON.stringify(data)});
+    //   if (res.status != 400) {
+    //     // increment likes
+    //     this.nodeValue = x;
+    //   }
+    // });
+    // likesButton.innerHTML = `${likes}<i class="fa fa-thumbs-up" aria-hidden="true" style="margin: 5px;"></i>`;
+    
+    // footer.appendChild(likesButton);
+    post.appendChild(footer);
+
+    document.getElementById('active').appendChild(post);
   }
 
   // create a snippet container
@@ -354,14 +454,28 @@
     viewCommentsButton.type = "button";
     viewCommentsButton.className = "btn btn-link view-replies-btn";
     viewCommentsButton.addEventListener('click', async function() {
-        var id = this.parentNode.parentNode.parentNode.id;
+
+        viewingComments = true;
+        var data = {};
+        data['snippet_id'] = id;
 
         // make a get call to the backend
-        let res = await fetch(urlForGettingComments, {method: 'POST', body: JSON.stringify(id)});
+        let response = await fetch(urlForGettingComments, {method: 'POST', body: JSON.stringify(data)});
+        let res = await response.json();
 
+        // remove all children except this
+        $("#snippet-display").children(`:not(#${id})`).remove();
+
+        for (r of res) {
+          console.log(r);
+          makeCommentContainer(0, r[1], r[0], user);
+        }
         // redirect to active.html
-        let endpoint = "{{ url_for('activePage') }}"
-        window.location.replace(baseURL + endpoint);
+        // let endpoint = "{{ url_for('activePage') }}"
+        // window.location.replace(baseURL + endpoint);
+        highlightCodeBlocks(document.getElementById("active"));
+        $(this).remove();
+
       });
 
     viewCommentsButton.appendChild(document.createTextNode("View Replies"));
@@ -371,7 +485,9 @@
     commentButton.className = "btn btn-link";
     commentButton.dataset.toggle = "modal";
     commentButton.dataset.target = "#replyModal";
-    // commentButton.addEventListener('click', )
+    commentButton.addEventListener('click', function() {
+      currentSnippetElement = s;
+    });
     commentButton.appendChild(document.createTextNode("Comment"));
 
     container.appendChild(commentButton);
@@ -390,8 +506,8 @@
           // copy value into snippet text editor
           snippetEditor.setValue(snippets[i].getValue());
           // save the index for form submission
-          currentSnippetIndex = i;
-          currentSnippetID = id;
+          currentSnippetEditorIndex = i;
+          currentSnippetElement = s;
       });
       editButton.innerHTML = `<i class="fa fa-pencil" aria-hidden="true"></i>Edit`;
       container.appendChild(editButton);
@@ -456,21 +572,76 @@
     let res = await response.json();
 
     console.log(res['user']);
+    currentUser = res['user'];
     let animationEvent = whichAnimationEvent();
-    // id, name, lang, code, owner, user, likes
+
+    //id, name, language, code, author, private, likes
     document.getElementById("container").className = "goup";
     $('#container').one(animationEvent, function(event) {
         $(this).remove();
         for(i=0;i < res['data'].length;i++) {
-          let [container, block] = makeSnippetContainer(res['data'][i][0], res['data'][i][2], res['data'][i][1], "stalin69", res['data'][i][6], res['user'], 0);
+          let [container, block] = makeSnippetContainer(res['data'][i][0], res['data'][i][2], res['data'][i][1], res['data'][i][4], res['data'][i][6], res['user'], i);
           document.getElementById("snippet-display").appendChild(container);
           appendSnippetEditor(block, res['data'][i][2], res['data'][i][3]);
       }
     });
+  });
+  
+  // posting a comment
+  document.getElementById("reply-form").addEventListener('submit', async function (event) {
+      event.preventDefault();
+      // get form values
+      data = {};
+      var comment = replyQuill.root.innerHTML;
+      if (!comment) {
+          alert("Comment is empty! Cannot submit empty comment!");
+          return false;
+      }
+      data['comment_text'] = comment;
+      data['snippet_id'] = currentSnippetElement.id;
+      var user = currentSnippetElement.getElementsByClassName("snippet-title")[0].innerHTML;
+      data['username'] = getUserFromString(user);
 
-  //id, lang, name, owner, likes, user, i
-    // event handler for updating a snippet
-    document.getElementById("submitUpdatedSnippet").addEventListener('submit', async function(event) {
+      // make a call to the backend to update database
+      let res = await fetch(urlForComments, {method: 'POST', body: JSON.stringify(data)});
+      // console.log(replyQuill.root.innerHTML);
+
+      // display the comment to the screen
+      if (viewingComments) {
+        makeCommentContainer(id, comment, currentUser, currentUser);
+      }
+
+      $('#replyModal').modal('hide');
+      this.reset();
+      replyQuill.root.innerHTML = "";
+  });
+
+  // submit edited reply handler
+  document.getElementById("edit-reply-form").addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    var update = editReplyQuill.root.innerHTML;
+    currentReplyElement.getElementById(`${currentReplyElement.id}_raw`).innerHTML = update;
+    if (!update) {
+          alert("Comment is empty! Cannot submit empty comment!");
+          return false;
+    }
+
+    var data = {};
+    data['comment_id'] = currentReplyElement.id;
+    data['edited_comment'] = update;
+    let res = await fetch(urlForEditComment, {method: 'POST', body: JSON.stringify(data)});
+
+    $('#editReplyModal').modal('hide');
+    this.reset();
+    editReplyQuill.root.innerHTML = "";
+
+    // highlight code in pre blocks
+    highlightCodeBlocks(currentReplyElement);
+  });
+
+  // submit updated snippet
+  document.getElementById("submitUpdatedSnippet").addEventListener('submit', async function(event) {
         event.preventDefault();
 
         // get the code from the editor
@@ -485,17 +656,14 @@
         }
 
         data['edited_code'] = contents;
-        data['snippet_id'] = currentSnippetID;
+        data['snippet_id'] = currentSnippetElement.id;
 
         // make a call to the backend to update database
         let res = await fetch(urlForEditSnippet, {method: 'POST', body: JSON.stringify(data)});
 
-        snippets[currentSnippetIndex].setValue(contents);
+        snippets[currentSnippetEditorIndex].setValue(contents);
         $('#editModal').modal('hide');
     });
 
-    // let endpoint = "{{ url_for('snippetDisplay') }}";
-    // window.location.href = baseURL + endpoint;
-  })
 </script>
 </html>
