@@ -366,11 +366,13 @@
     var header = document.createElement('div');
     header.className = "flex-reply-header";
     var container = document.createElement('div');
+    container.className = 'reply-username';
     container.innerHTML = `<i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>${owner}`;
     header.appendChild(container);
     post.appendChild(header);
 
     var body = document.createElement('div');
+    body.className = 'reply-body';
     body.id = `${id}_raw`;
     body.innerHTML = comment;
     post.appendChild(body);
