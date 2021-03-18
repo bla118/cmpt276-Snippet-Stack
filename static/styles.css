@@ -180,12 +180,23 @@
     animation: floatUp 1s ease 1;
     z-index: 1;
 }
+.deletedSnippetAnimation {
+    animation: goLeft 1s ease 1;
+}
 @keyframes floatUp{
     0% {
         transform: translateY(0);
     }
     100% {
         transform: translateY(-100vh);
+    }
+}
+@keyframes goLeft{
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(100vw);
     }
 }
 /* .CodeMirror-gutters {

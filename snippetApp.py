@@ -295,9 +295,9 @@ def comment_snippet():
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Comments(snippet_id, commenting_user, comment_text) VALUES(?,?,?)", [snippet_id, username, comment_text])
-        # Victor can you change the message to include the comment_id for example 
-        #return jsonify(message="<id>")
-        return jsonify(message="Successfully added comment")
+            comment_id = cursor.execute("SELECT MAX(rowid) FROM Comments;").fetchone()[0]
+            print(comment_id)
+            return json.dumps(comment_id)
     except Exception as e:
         print(e)
         return jsonify(message="Error"), 400
@@ -310,11 +310,12 @@ def edit_comment():
     data = request.data.decode('ascii')
     data = json.loads(data)
     try:
+        print(data)
         snippet_id = int(data['comment_id'])
         edited_code = data['edited_comment']
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
-            cursor.execute("UPDATE Comments SET comment_text = ? where id = ?", [edited_code, snippet_id])
+            cursor.execute("UPDATE Comments SET comment_text = ? where rowid = ?", [edited_code, snippet_id])
             return jsonify(message="Successfully updated snippet")
     except Exception as e:
         print(e)
@@ -335,8 +336,7 @@ def get_comments_for_snippet():
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
 
-            # hey Victor or Yong can you change this so it also gives the reply id as well? thanks!
-            cursor.execute("SELECT c.commenting_user, c.comment_text FROM Comments c JOIN Snippets s ON c.snippet_id = s.id WHERE c.snippet_id = ?", [snippet_id])
+            cursor.execute("SELECT c.rowid, c.commenting_user, c.comment_text FROM Comments c JOIN Snippets s ON c.snippet_id = s.id WHERE c.snippet_id = ?", [snippet_id])
             res = cursor.fetchall()
             
             print(res)
