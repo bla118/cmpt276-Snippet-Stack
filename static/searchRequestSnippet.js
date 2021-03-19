@@ -336,7 +336,7 @@ document.getElementById("reply-form").addEventListener('submit', async function 
     data['snippet_id'] = currentSnippetElement.id;
     var user = currentSnippetElement.getElementsByClassName("snippet-title")[0].innerHTML;
 
-    data['username'] = document.getElementById("snippet-display").firstElementChild.firstElementChild.firstElementChild.lastElementChild.innerHTML;
+    data['username'] = currentUser;
 
     // make a call to the backend to update database
     let response = await fetch(urlForComments, {method: 'POST', body: JSON.stringify(data)});

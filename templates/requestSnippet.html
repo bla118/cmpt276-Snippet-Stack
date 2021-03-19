@@ -256,24 +256,30 @@ document.getElementById("requestForm").addEventListener('submit', async function
     data['language'] = document.getElementById("request-language-box").value;
     data['description'] = document.getElementById("request-term-box").value;
     // const response = await fetch("http://127.0.0.1:5000/api/fetch_snippet", {method: 'GET', body: JSON.stringify(data)});
-    
+    console.log(data);
     const response = await fetch(urlForRequest,
                                 {method: 'POST', body: JSON.stringify(data)});
-    let res = await response.json();
 
-    console.log(res['user']);
-    currentUser = res['user'];
+    if (response.ok) {
+      // let res = await response.json();
+      // console.log(res['user']);
+      // currentUser = res['user'];
+
+      window.location.href = baseURL + "{{ url_for('home') }}";
+    } else {
+      alert("request error!");
+    }
 
     //id, name, language, code, author, private, likes
-    document.getElementById("container").className = "goup";
-    $('#container').one(animationEvent, function(event) {
-        $(this).remove();
-        for(i=0;i < res['data'].length;i++) {
-        let [container, block] = makeSnippetContainer(res['data'][i][0], res['data'][i][2], res['data'][i][1], res['data'][i][4], res['data'][i][6], res['user'], i);
-        document.getElementById("snippet-display").appendChild(container);
-        appendSnippetEditor(block, res['data'][i][2], res['data'][i][3]);
-    }
-    });
+    // document.getElementById("container").className = "goup";
+    // $('#container').one(animationEvent, function(event) {
+    //     $(this).remove();
+    //     for(i=0;i < res['data'].length;i++) {
+    //     let [container, block] = makeSnippetContainer(res['data'][i][0], res['data'][i][2], res['data'][i][1], res['data'][i][4], res['data'][i][6], res['user'], i);
+    //     document.getElementById("snippet-display").appendChild(container);
+    //     appendSnippetEditor(block, res['data'][i][2], res['data'][i][3]);
+    // }
+    // });
 });
 </script>
 </html>

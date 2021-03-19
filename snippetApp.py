@@ -258,7 +258,8 @@ def create_account():
 @app.route('/request_snippet')
 def request_snippet_page():
     ''' Entry point for request snippet page '''
-    print(g.user)
+    if not g.user:
+        return redirect(url_for("login"))
     return render_template('requestSnippet.html')
 
 
@@ -267,16 +268,20 @@ def request_snippet():
     ''' Accepts an authenticated user request for a new snippet and inserts it into the database '''
     if not g.user:
         return jsonify(message="Not logged in")
+
+    data = request.data.decode('ascii')
+    data = json.loads(data)
     try:
-        description = request.form['description']
-        language = request.form['language']
+        description = data['description']
+        language = data['language']
+        print(data)
         user = g.user
         with sqlite3.connect('Snippets.db') as conn:
             cursor = conn.cursor()
             # the status of the user request is set to pending by default
             cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description.lower(), language.lower(), 'pending'])
 
-        return redirect(url_for("home"))
+        return jsonify(message="Success"), 200
     except Exception:
         return jsonify(message="Error"), 400
 
