@@ -44,34 +44,6 @@ function highlightCodeBlocks(node) {
     
 }
 
-// helper
-function getLanguageFromString(lang) {
-    // var re = lang.match('([^:]+):.*')[1].trim();
-    switch (lang) {
-    case 'c':
-    case 'c++': 
-    case 'c#':
-    case 'objective-c': 
-    case 'java': 
-    case 'kotlin': 
-    case 'ceylon':
-    case 'scala': 
-        return 'clike';
-        break;
-
-    case 'html': 
-        return 'htmlmixed';
-        break;
-
-    case 'python':
-        return 'python';
-        break;
-        
-    default:
-        return lang;
-    }
-}
-
 
 // creates a new editor
 function appendSnippetEditor(block, lang, code) {

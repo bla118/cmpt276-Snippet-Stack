@@ -8,9 +8,37 @@ var codeEditor = new CodeMirror(document.getElementById("topic-content-box"), {
 
 codeEditor.refresh();
 
+// helper
+function getLanguageFromString(lang) {
+    // var re = lang.match('([^:]+):.*')[1].trim();
+    switch (lang) {
+    case 'c':
+    case 'c++': 
+    case 'c#':
+    case 'objective-c': 
+    case 'java': 
+    case 'kotlin': 
+    case 'ceylon':
+    case 'scala': 
+        return 'clike';
+        break;
+
+    case 'html': 
+        return 'htmlmixed';
+        break;
+
+    case 'python':
+        return 'python';
+        break;
+        
+    default:
+        return lang;
+    }
+}
+
 // changes the language mode of the code editor
 document.getElementById("language-box").addEventListener('change', function() {
-    codeEditor.setOption("mode", this.value);
+    codeEditor.setOption("mode", getLanguageFromString(this.value));
 });
 
 // submission event handler for creating new snippet
