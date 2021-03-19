@@ -130,7 +130,7 @@
 }
 .reply-username {
     font-weight: bold;
-    color: rgb(64, 67, 240);
+    color: rgb(76, 77, 88);
 }
 .reply-body {
     background-color: whitesmoke;
@@ -166,9 +166,13 @@
     color: white;
 }
 .snippet-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
     font-family: 'Courier New', monospace; 
     font-weight: bold;
-    color: rgb(64, 67, 240);
     margin: 10px;
 }
 .snippet-body {
@@ -182,6 +186,9 @@
     align-items: center;
     justify-content: space-between;
     color: white;
+}
+.snip-btn {
+    background-color: rgb(37, 35, 35);
 }
 pre {
     border-radius: .4em;

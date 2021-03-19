@@ -241,7 +241,7 @@
       {% for r in replies %}
       <div class="post-section" id="{{ r.id }}">
         <div class="flex-reply-header">
-          <div><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>{{ r.user_id }}</div>
+          <div class="reply-username"><i class="fa fa-user" aria-hidden="true" style="margin-right: 5px;"></i>{{ r.user_id }}</div>
         </div>
         <div id="{{ r.id }}_raw">{{ r.contents|safe }}</div>
         <div class="flex-reply-footer">

@@ -275,6 +275,7 @@ def request_snippet():
             cursor = conn.cursor()
             # the status of the user request is set to pending by default
             cursor.execute("INSERT INTO Requests(user, description, language, status) VALUES(?,?,?,?)", [user, description.lower(), language.lower(), 'pending'])
+
         return redirect(url_for("home"))
     except Exception:
         return jsonify(message="Error"), 400
