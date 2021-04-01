@@ -147,9 +147,12 @@ button:hover{
 }
 .backgroundImage{
     position: relative;
+    background: radial-gradient(closest-side, #b3abab, #9198e5);
+    height: 100%;
+    width: 100%;
     z-index:1;
 }
-.backgroundImage:before{
+/* .backgroundImage:before{
     z-index:-1;
     position:absolute;
     left:0;
@@ -157,13 +160,14 @@ button:hover{
     content: url('backgroundImage.PNG');
     opacity:0.1;
     background-size: 100vh;
-    /* transform: translateX(3vw); */
+    transform: translateX(3vw);
     transform: translate(3vw, -11vh);
-}
+} */
 .center-home-page {
     /* background-color: rgb(221, 221, 221); */
     margin: 0;
     text-align: center;
+    height: 100%;
 }
 #snippet_name{
     width: 200px;
