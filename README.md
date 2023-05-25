@@ -1,6 +1,6 @@
 # Snippet Stack
 
-This project is deployed at: https://snippet-stack.herokuapp.com
+This was a group project for CMPT 276 (Intro to Software Engineering)
 
 ## Dependencies
 
