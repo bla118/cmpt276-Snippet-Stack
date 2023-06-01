@@ -12,7 +12,7 @@ Flask 1.1.2
 
 To run this project in development mode, use:\
 `pip install -r requirements.txt`\
-`python3 snippetApp.py`
+`python snippetApp.py`
 
 ## Demo
 
